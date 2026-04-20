@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://blog.xrlfreedom.top',
-  integrations: [tailwind(), sitemap()],
+  integrations: [tailwind()],
   markdown: {
     shikiConfig: {
       theme: 'css-variables',
