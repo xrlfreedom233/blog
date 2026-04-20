@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "git add . && git commit -m \"Update site\" && git push origin main"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.4.0",
