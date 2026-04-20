@@ -1,0 +1,42 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// 表格样式
+.article-content table {
+  margin: $spacing-xl 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  border: 1px solid $border-light;
+
+  @include dark-mode {
+    border-color: $border-dark;
+  }
+}
+
+
+.article-content th {
+  background-color: $bg-secondary;
+  padding: $spacing-base $spacing-xl;
+  text-align: left;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: $text-primary;
+
+  @include dark-mode {
+    background-color: $bg-dark;
+    color: $text-light;
+  }
+}
+
+.article-content td {
+  border-top: 1px solid $border-light;
+  padding: $spacing-base $spacing-xl;
+  font-size: $text-sm;
+  color: $text-secondary;
+
+  @include dark-mode {
+    border-top-color: $border-dark;
+    color: $text-light;
+  }
+}

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import linksData from '../data/links.json';
+---
+
+<BaseLayout title="友情链接 | freedom">
+	<Header />
+	
+	<main class="container mx-auto px-4 py-32 max-w-6xl">
+		<h1 class="text-4xl font-bold mb-4 dark:text-white text-center">友情链接</h1>
+		<p class="text-center text-gray-500 mb-16">遇事不决，可问春风；择友而交，亦是幸事。</p>
+
+		<div class="space-y-16">
+			{linksData.map(group => (
+				<div>
+					<h2 class="text-2xl font-bold mb-8 dark:text-white flex items-center gap-2">
+						<span class="w-1 h-8 bg-primary rounded-full"></span>
+						{group.group}
+					</h2>
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{group.links.map(link => (
+							<a 
+								href={link.url} 
+								target="_blank"
+								class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group"
+							>
+								<img src={link.avatar} alt={link.name} class="w-16 h-16 rounded-xl object-cover mr-4" />
+								<div class="flex-1 overflow-hidden">
+									<h3 class="font-bold text-gray-800 dark:text-white group-hover:text-primary transition-colors">{link.name}</h3>
+									<p class="text-sm text-gray-500 dark:text-gray-400 truncate">{link.description}</p>
+								</div>
+							</a>
+						))}
+					</div>
+				</div>
+			))}
+		</div>
+	</main>
+
+	<Footer />
+</BaseLayout>

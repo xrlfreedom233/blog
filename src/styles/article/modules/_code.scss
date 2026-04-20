@@ -1,0 +1,29 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// 代码块样式  使用插件完成
+.article-content pre {
+  //margin: $spacing-xl 0;
+  //overflow-x: auto;
+  //border-radius: $radius-lg;
+  //padding: $spacing-base;
+  //background-color: $bg-code;
+  //color: $text-light;
+
+ 
+}
+
+//// 行内代码样式
+//.article-content code {
+//  border-radius: $radius-md;
+//  background-color: $bg-secondary;
+//  padding: 0.2rem 0.5rem;
+//  font-size: $text-sm;
+//
+//  @include dark-mode {
+//    background-color: $bg-dark;
+//  }
+//}
+
+
+

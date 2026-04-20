@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const postCount = allPosts.length;
+
+const categories = new Set();
+const tags = new Set();
+allPosts.forEach(post => {
+    post.data.categories?.forEach(c => categories.add(c));
+    post.data.tags?.forEach(t => tags.add(t));
+});
+
+const stats = [
+    { label: '文章', value: postCount, color: 'text-sky-500 dark:text-sky-300', href: '/archives' },
+    { label: '分类', value: categories.size, color: 'text-green-500 dark:text-green-300', href: '/categories' },
+    { label: '标签', value: tags.size, color: 'text-rose-500 dark:text-rose-300', href: '/tags' },
+];
+---
+
+<div class="grid grid-cols-3 gap-3">
+    {stats.map(stat => (
+        <a href={stat.href} class="flex flex-col items-center py-3 bg-white/50 dark:bg-white/10 backdrop-blur-md rounded-[10px] border border-white/40 dark:border-white/10 shadow-sm transition-all hover:bg-white/80 dark:hover:bg-white/20 hover:-translate-y-1 group">
+            <span class={`text-[22px] font-black ${stat.color} leading-none mb-1 drop-shadow-sm transition-transform group-hover:scale-110`}>{stat.value}</span>
+            <span class="text-[13px] text-gray-500 dark:text-gray-400 font-bold">{stat.label}</span>
+        </a>
+    ))}
+</div>

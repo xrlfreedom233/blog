@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import PostCard from '../components/PostCard.astro';
+import Stats from '../components/sidebar/Stats.astro';
+import PopularPosts from '../components/sidebar/PopularPosts.astro';
+import AuthorCard from '../components/sidebar/AuthorCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const tags = [...new Set(posts.flatMap(post => post.data.tags || []))].slice(0, 12);
+const categoryCounts = posts.reduce((acc, post) => {
+	post.data.categories?.forEach(cat => { acc[cat] = (acc[cat] || 0) + 1; });
+	return acc;
+}, {} as Record<string, number>);
+const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="首页 | freedom">
+	<Header />
+	
+	<main class="bg-base-100 min-h-screen">
+		<Hero />
+		
+		<div class="max-w-7xl mx-auto px-4 md:px-10 py-12">
+			<div class="flex flex-col lg:flex-row-reverse gap-10">
+				
+				<!-- 右侧文章区 -->
+				<div class="w-full lg:w-3/4 flex flex-col gap-8">
+					{posts.map((post, index) => (
+						<div class="animate-fade-in-up" style={`animation-delay: ${index * 100}ms`}>
+							<PostCard post={post} />
+						</div>
+					))}
+				</div>
+
+				<!-- 左侧侧边栏 (极简稳定版) -->
+				<aside class="w-full lg:w-1/4">
+					<div class="flex flex-col space-y-12">
+						
+						<!-- 1. 作者卡片 -->
+						<AuthorCard />
+
+						<!-- 2. 分类列表 -->
+						<div class="px-2">
+							<h3 class="flex items-center gap-3 text-xs font-black text-gray-400 uppercase tracking-[0.3em] mb-8">
+								<span class="w-8 h-px bg-gray-200 dark:bg-gray-700"></span>
+								Categories
+							</h3>
+							<ul class="space-y-4 list-none p-0 m-0">
+								{categories.map(([name, count]) => (
+									<li>
+										<a href={`/categories/${name}`} class="flex items-center justify-between group no-underline text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+											<span class="text-sm font-bold">{name}</span>
+											<span class="text-[10px] font-mono opacity-40">({count})</span>
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+
+						<!-- 3. 热门精选 -->
+						<PopularPosts />
+
+						<!-- 4. 话题标签 -->
+						<div class="px-2">
+							<h3 class="flex items-center gap-3 text-xs font-black text-gray-400 uppercase tracking-[0.3em] mb-8">
+								<span class="w-8 h-px bg-gray-200 dark:bg-gray-700"></span>
+								Tags
+							</h3>
+							<div class="flex flex-wrap gap-2.5">
+								{tags.map(tag => (
+									<a href={`/tags/${tag}`} class="px-3 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-[10px] font-bold text-gray-500 dark:text-gray-400 rounded-lg transition-all no-underline">
+										#{tag}
+									</a>
+								))}
+							</div>
+						</div>
+
+					</div>
+				</aside>
+
+			</div>
+		</div>
+	</main>
+
+	<Footer />
+</BaseLayout>
+
+<style>
+	@keyframes spin-slow {
+		from { transform: rotate(0deg); }
+		to { transform: rotate(360deg); }
+	}
+	.animate-spin-slow {
+		animation: spin-slow 12s linear infinite;
+	}
+</style>

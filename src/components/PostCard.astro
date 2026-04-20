@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import readingTime from 'reading-time';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, pubDate, tags, categories } = post.data;
+const stats = readingTime(post.body);
+---
+
+<article class="group">
+	<div class="rounded-xl overflow-hidden relative block cursor-pointer border border-border-base shadow-sm transition-all duration-300 hover:scale-[1.01] hover:shadow-xl bg-base-100">
+		<a href={`/blog/${post.slug}`} class="p-6 md:p-8 block">
+			<div class="flex flex-col h-full">
+				<!-- 标题 -->
+				<h2 class="mb-4 text-xl md:text-2xl font-bold text-text-base transition-colors group-hover:text-primary leading-tight">
+					{title}
+				</h2>
+
+				<!-- 整合后的信息行 (日期 | 阅读时间 | 分类) -->
+				<div class="flex flex-wrap items-center gap-y-2 text-[11px] font-bold text-text-muted/50 uppercase tracking-wider">
+					<!-- 日期 -->
+					<div class="flex items-center gap-1.5 mr-4">
+						<span class="icon-[tabler--calendar] w-3.5 h-3.5 opacity-60"></span>
+						<time>{pubDate.toLocaleDateString('zh-CN')}</time>
+					</div>
+
+					<!-- 阅读时间 -->
+					<div class="flex items-center gap-1.5 mr-4">
+						<span class="icon-[tabler--clock] w-3.5 h-3.5 opacity-60"></span>
+						<span>{Math.ceil(stats.minutes)} 分钟阅读</span>
+					</div>
+
+					<!-- 分类 -->
+					{categories && categories.length > 0 && (
+						<div class="flex items-center gap-1.5 px-2 py-0.5 bg-primary/5 text-primary/70 rounded-md">
+							<span class="icon-[tabler--folder] w-3.5 h-3.5"></span>
+							<span>{categories[0]}</span>
+						</div>
+					)}
+				</div>
+			</div>
+
+			<!-- 底部装饰线 -->
+			<div class="absolute bottom-0 left-0 h-0.5 w-0 bg-primary transition-all duration-500 group-hover:w-full"></div>
+		</a>
+	</div>
+</article>

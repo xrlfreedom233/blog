@@ -1,0 +1,70 @@
+<div
+  x-data="{ 
+     isOpen: false, 
+     currentTheme: localStorage.getItem('theme') || 'light',
+     themes: {
+       light: { name: '明亮模式', icon: 'h-4 w-4' },
+       dark: { name: '暗黑模式', icon: 'h-4 w-4' },
+       spring: { name: '春季主题', icon: 'h-4 w-4' },
+       summer: { name: '夏季主题', icon: 'h-4 w-4' },
+       autumn: { name: '秋季主题', icon: 'h-4 w-4' },
+       winter: { name: '冬季主题', icon: 'h-4 w-4' },
+     },
+     applyTheme(theme) {
+       this.currentTheme = theme;
+       localStorage.setItem('theme', theme);
+       document.documentElement.setAttribute('data-theme', theme);
+       if (theme === 'dark') {
+         document.documentElement.classList.add('dark');
+       } else {
+         document.documentElement.classList.remove('dark');
+       }
+       // Dispatch event for other components
+       window.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme } }));
+     }
+  }"
+  x-init="applyTheme(currentTheme)"
+  class="relative"
+  @keydown.escape.window="isOpen = false"
+>
+  <!-- 主题切换按钮 -->
+  <button
+    @click="isOpen = !isOpen"
+    class="flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 group hover:bg-white/10 active:scale-95"
+    :aria-expanded="isOpen"
+  >
+    <span class="sr-only">切换主题</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1.6em" height="1.5em" viewBox="0 0 16 16" class="transition-all duration-300 group-hover:scale-110 drop-shadow-sm" :class="isScrolled ? 'text-text-base' : 'text-white'">
+      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m1.875 8l.686-2.743a1 1 0 0 1 .97-.757h10.938a1 1 0 0 1 .97 1.243l-.315 1.26M6 13.5H2.004A1.5 1.5 0 0 1 .5 12V3.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1" stroke-width="1"/>
+      <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4">
+        <path stroke="currentColor" d="M12 21a9 9 0 0 1 0-18c4.97 0 9 3.582 9 8c0 1.06-.474 2.078-1.318 2.828S17.693 15 16.5 15H14a2 2 0 0 0-1 3.75A1.3 1.3 0 0 1 12 21" transform="matrix(.41667 0 0 .4167 6.75 6.747)"/>
+      </g>
+    </svg>
+  </button>
+
+  <!-- 主题选择面板 -->
+  <div
+    x-show="isOpen"
+    x-cloak
+    x-transition:enter="transition ease-out duration-200"
+    x-transition:enter-start="opacity-0 translate-y-1"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-150"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-1"
+    @click.away="isOpen = false"
+    class="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black/5 focus:outline-none"
+  >
+    <div class="py-1">
+      <template x-for="(theme, name) in themes" :key="name">
+        <button
+          @click="applyTheme(name); isOpen = false"
+          class="flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          :class="{ 'bg-gray-50 dark:bg-gray-900': currentTheme === name }"
+        >
+          <span x-text="theme.name"></span>
+        </button>
+      </template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+[
+  {
+    "group": "技术大佬",
+    "links": [
+      {
+        "name": "Astro",
+        "url": "https://astro.build",
+        "avatar": "https://astro.build/favicon.svg",
+        "description": "The web framework for content-driven websites."
+      },
+      {
+        "name": "Tailwind CSS",
+        "url": "https://tailwindcss.com",
+        "avatar": "https://tailwindcss.com/favicons/favicon-32x32.png?v=3",
+        "description": "A utility-first CSS framework."
+      }
+    ]
+  },
+  {
+    "group": "生活分享",
+    "links": [
+      {
+        "name": "Ideaflow",
+        "url": "https://github.com/Idea-flow",
+        "avatar": "/images/favicon.ico",
+        "description": "本项目作者的 GitHub 组织"
+      }
+    ]
+  }
+]

@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
+import AuthorCard from '../components/sidebar/AuthorCard.astro';
+import PopularPosts from '../components/sidebar/PopularPosts.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const archives = allPosts.reduce((acc, post) => {
+	const year = post.data.pubDate.getFullYear();
+	if (!acc[year]) acc[year] = [];
+	acc[year].push(post);
+	return acc;
+}, {} as Record<number, typeof allPosts>);
+
+const years = Object.keys(archives).sort((a, b) => parseInt(b) - parseInt(a));
+---
+
+<BaseLayout title="归档 | freedom">
+	<Header />
+    <Hero title="文章归档" subtitle="岁月留痕，温故知新" />
+	
+	<main class="container mx-auto px-4 py-16">
+        <div class="flex flex-col lg:flex-row-reverse gap-12">
+            <div class="w-full lg:w-3/4">
+                <div class="relative border-l-2 border-border-base/50 ml-4 md:ml-0 pl-8 space-y-12">
+                    {years.map(year => (
+                        <div class="relative">
+                            <div class="absolute -left-[41px] top-0 h-5 w-5 rounded-full bg-primary border-4 border-base-100 shadow-sm"></div>
+                            <h2 class="text-3xl font-black text-text-base mb-8 tracking-tight italic">{year}</h2>
+                            <div class="space-y-8">
+                                {archives[parseInt(year)].map(post => (
+                                    <div class="flex flex-col md:flex-row md:items-baseline gap-4 group">
+                                        <time class="text-xs font-bold text-text-muted/40 uppercase tracking-widest w-24 shrink-0">
+                                            {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}
+                                        </time>
+                                        <a href={`/blog/${post.slug}`} class="text-xl font-bold text-text-base/80 hover:text-primary transition-all group-hover:translate-x-1 inline-block">
+                                            {post.data.title}
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <aside class="w-full lg:w-1/4 space-y-12">
+                <AuthorCard />
+                <PopularPosts />
+            </aside>
+        </div>
+	</main>
+	<Footer />
+</BaseLayout>

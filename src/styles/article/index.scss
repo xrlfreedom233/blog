@@ -1,0 +1,23 @@
+// 导入变量和混合器
+@use 'modules/variables' as *;
+@use 'modules/mixins' as *;
+
+// 导入各个功能模块
+@use 'modules/code';
+@use 'modules/heading2';
+@use 'modules/text';
+@use 'modules/image';
+@use 'modules/table';
+
+
+// 文章内容区域的基础样式
+.article-content {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: $spacing-base;
+
+  @include responsive('md') {
+    padding: $spacing-lg;
+  }
+  
+}

@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Hero from '../../components/Hero.astro';
+
+const allPosts = await getCollection('blog');
+const categories = allPosts.reduce((acc, post) => {
+  post.data.categories?.forEach(cat => {
+    acc[cat] = (acc[cat] || 0) + 1;
+  });
+  return acc;
+}, {} as Record<string, number>);
+
+const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="全部分类 | Ideaflow">
+  <Header />
+  <Hero title="文章分类" subtitle={`全站共计 ${categoryList.length} 个分类`} />
+  
+  <main class="container mx-auto px-4 py-20 max-w-4xl">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {categoryList.map(([name, count], index) => (
+        <a 
+          href={`/categories/${name}`}
+          class="group p-8 bg-base-100 rounded-3xl border border-border-base shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 animate-fade-in-up"
+          style={`animation-delay: ${index * 100}ms`}
+        >
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <span class="text-3xl">📂</span>
+              <h2 class="text-xl font-bold text-text-base group-hover:text-primary transition-colors">{name}</h2>
+            </div>
+            <span class="px-4 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold">
+              {count} 篇
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

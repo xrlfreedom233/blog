@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PostCard from '../../components/PostCard.astro';
+import Hero from '../../components/Hero.astro';
+import AuthorCard from '../../components/sidebar/AuthorCard.astro';
+import PopularPosts from '../../components/sidebar/PopularPosts.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const uniqueCategories = [...new Set(allPosts.flatMap((post) => post.data.categories || []))];
+  return uniqueCategories.map((category) => {
+    const filteredPosts = allPosts.filter((post) => post.data.categories?.includes(category));
+    return { params: { category }, props: { posts: filteredPosts } };
+  });
+}
+
+const { category } = Astro.params;
+const { posts } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const categoryCounts = allPosts.reduce((acc, post) => {
+	post.data.categories?.forEach(cat => { acc[cat] = (acc[cat] || 0) + 1; });
+	return acc;
+}, {} as Record<string, number>);
+const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title={`分类: ${category} | freedom`}>
+  <Header />
+  <Hero title={`📂 ${category}`} subtitle={`该分类下共有 ${posts.length} 篇文章`} />
+  
+  <main class="container mx-auto px-4 py-16">
+    <div class="flex flex-col lg:flex-row-reverse gap-12">
+      <div class="w-full lg:w-3/4">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {posts.map((post, index) => (
+            <div class="animate-fade-in-up opacity-0" style={`animation-delay: ${index * 100}ms`}>
+              <PostCard post={post} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <aside class="w-full lg:w-1/4 space-y-12">
+        <AuthorCard />
+        <section class="px-2 animate-fade-in">
+          <h3 class="text-[10px] font-black text-text-muted/60 uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
+            <span class="w-8 h-[1px] bg-border-base/50"></span>
+            Categories
+          </h3>
+          <div class="space-y-4">
+            {categories.map(([name, count]) => (
+              <a href={`/categories/${name}`} class="flex items-center justify-between group">
+                <span class={`text-sm font-semibold group-hover:text-primary transition-colors ${name === category ? 'text-primary' : 'text-text-base/60'}`}>{name}</span>
+                <span class="text-[10px] font-bold text-text-muted/40 tracking-tighter">({count})</span>
+              </a>
+            ))}
+          </div>
+        </section>
+        <PopularPosts />
+      </aside>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

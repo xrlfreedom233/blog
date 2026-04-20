@@ -1,0 +1,356 @@
+/* 主题系统变量 */
+
+/* 默认亮色主题 */
+:root {
+  /* Z轴层级系统 */
+  --z-negative: -1;        /* 负层级 */
+  --z-base: 0;             /* 基础层级 */
+  --z-raised: 1;           /* 抬升层级 */
+  --z-dropdown: 1000;      /* 下拉层级 */
+  --z-sticky: 1100;        /* 粘性层级 */
+  --z-fixed: 1200;         /* 固定层级 */
+  --z-modal: 1300;         /* 模态层级 */
+  --z-popover: 1400;       /* 弹出层级 */
+  --z-tooltip: 1500;       /* 提示层级 */
+
+  /* 滚动条样式 */
+  --scrollbar-track: #f5f7fa;      /* 滚动条轨道颜色，使用浅灰色 */
+  --scrollbar-thumb: #c1c1c1;       /* 滚动条滑块颜色，使用主色调 */
+  --scrollbar-thumb-hover: #a8a8a8;  /* 滚动条滑块悬停颜色，使用主色调的hover状态 */
+
+  /* 基础色板 - 品牌标识色系 */
+  --primary: #818cf8;          /* 主色，优雅紫色，用于主要按钮、重要操作、品牌元素 */
+  --primary-hover: #6366f1;    /* 主色悬停态，柔和紫色 */
+  --primary-active: #6366f1;   /* 主色激活态，深邃紫色 */
+  --secondary: #9F7AEA;        /* 次色，淡雅紫色 */
+  --secondary-hover: #B794F4;  /* 次色悬停态 */
+  --secondary-active: #805AD5; /* 次色激活态 */
+  --accent: #553C9A;          /* 强调色，深紫色 */
+  --accent-hover: #6B46C1;    /* 强调色悬停态 */
+  --accent-active: #44337A;    /* 强调色激活态 */
+
+  /* 中性色系 */
+  --neutral: #4B5563;         /* 中性色，深灰色 */
+  --neutral-hover: #6B7280;    /* 中性色悬停态 */
+  --neutral-active: #374151;   /* 中性色激活态 */
+
+  /* 基础背景色系 */
+  --base-100: #FFFFFF;         /* 主要背景色，纯白色 */
+  --base-200: #F9FAFB;         /* 次要背景色，淡灰白色 */
+  --base-300: #F3F4F6;         /* 三级背景色，浅灰色 */
+  --base-content: #1F2937;     /* 基础内容色，深灰色 */
+
+  /* 功能色系 */
+  --info: #6366F1;            /* 信息色，靛蓝色 */
+  --info-content: #FFFFFF;     /* 信息色上的文本色 */
+  --success: #10B981;          /* 成功色，翡翠绿 */
+  --success-content: #FFFFFF;  /* 成功色上的文本色 */
+  --warning: #F59E0B;         /* 警告色，琥珀色 */
+  --warning-content: #FFFFFF; /* 警告色上的文本色 */
+  --error: #EF4444;          /* 错误色，鲜红色 */
+  --error-content: #FFFFFF;   /* 错误色上的文本色 */
+
+  /* 文本色系 */
+  --text-base: #1F2937;      /* 基础文本色，深灰色 */
+  --text-muted: #4B5563;     /* 次要文本色，中灰色 */
+  --text-disabled: #9CA3AF;   /* 禁用文本色，浅灰色 */
+  --text-placeholder: #D1D5DB;/* 占位文本色，极浅灰色 */
+
+  /* 边框色系 */
+  --border-base: #E5E7EB;    /* 基础边框色，浅灰色 */
+  --border-light: #F3F4F6;    /* 浅色边框，极浅灰色 */
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(147, 147, 250, 0.05);
+  --shadow-md: rgba(147, 147, 250, 0.1);
+  --shadow-lg: rgba(147, 147, 250, 0.15);
+}
+
+/* 暗色主题 */
+[data-theme="dark"] {
+  /* 滚动条样式 */
+  --scrollbar-track: #2d2d2d;      /* 滚动条轨道颜色，使用深色背景 */
+  --scrollbar-thumb: #5a5a5a;       /* 滚动条滑块颜色，使用主色调 */
+  --scrollbar-thumb-hover: #707070;  /* 滚动条滑块悬停颜色，使用主色调的hover状态 */
+
+  /* 基础色板 - 品牌标识色系 */
+  --primary: #818cf8;          /* 主色，优雅紫色，用于主要按钮、重要操作、品牌元素 */
+  --primary-hover: #6366f1;    /* 主色悬停态，柔和紫色 */
+  --primary-active: #6366f1;   /* 主色激活态，深邃紫色 */
+  --secondary: #34D399;
+  --secondary-hover: #6ee7b7;
+  --secondary-active: #10b981;
+  --accent: #A78BFA;
+  --accent-hover: #c4b5fd;
+  --accent-active: #8b5cf6;
+
+  /* 中性色系 */
+  --neutral: #4B5563;
+  --neutral-hover: #6B7280;
+  --neutral-active: #374151;
+
+  /* 基础背景色系 */
+  --base-100: #16161a;
+  --base-200: #1F2937;
+  --base-300: #374151;
+  --base-content: #F9FAFB;
+
+  /* 功能色系 */
+  --info: #60A5FA;
+  --info-content: #FFFFFF;
+  --success: #22C55E;
+  --success-content: #FFFFFF;
+  --warning: #F59E0B;
+  --warning-content: #FFFFFF;
+  --error: #EF4444;
+  --error-content: #FFFFFF;
+
+  /* 文本色系 */
+  --text-base: #E0E0E0;
+  --text-muted: #D1D5DB;
+  --text-disabled: #6B7280;
+  --text-placeholder: #4B5563;
+
+  /* 边框色系 */
+  --border-base: #374151;
+  --border-light: #1F2937;
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(0, 0, 0, 0.2);
+  --shadow-md: rgba(0, 0, 0, 0.4);
+  --shadow-lg: rgba(0, 0, 0, 0.6);
+}
+
+/* 春天主题 */
+[data-theme="spring"] {
+  --primary: #5cb391;          /* 调深一点，更明了 */
+  --text-base: #2d3748;       /* 加深文字，提高阅读清晰度 */
+  --text-muted: #4a5568;
+  --base-100: #fdf8f5;
+  --border-base: #e2d5cc;
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(136, 192, 168, 0.05);
+  --shadow-md: rgba(136, 192, 168, 0.1);
+  --shadow-lg: rgba(136, 192, 168, 0.15);
+}
+
+/* 夏季主题 */
+[data-theme="summer"] {
+  /* 滚动条样式 */
+  --scrollbar-track: #B2EBF2;      /* 滚动条轨道颜色，使用浅蓝绿色 */
+  --scrollbar-thumb: #00B4D8;       /* 滚动条滑块颜色，使用主色调 */
+  --scrollbar-thumb-hover: #48CAE4;  /* 滚动条滑块悬停颜色，使用主色调的hover状态 */
+
+  /* 基础色板 - 品牌标识色系 */
+  --primary: #00B4D8;          /* 主色，清爽蓝色，象征夏日海洋 */
+  --primary-hover: #48CAE4;    /* 主色悬停态，浅蓝色 */
+  --primary-active: #0096C7;   /* 主色激活态，深蓝色 */
+  --secondary: #90E0EF;        /* 次色，淡蓝色，象征清凉水波 */
+  --secondary-hover: #ADE8F4;  /* 次色悬停态，极浅蓝色 */
+  --secondary-active: #48CAE4; /* 次色激活态，中蓝色 */
+  --accent: #FFB703;          /* 强调色，金黄色，象征夏日阳光 */
+  --accent-hover: #FDC43F;    /* 强调色悬停态，明黄色 */
+  --accent-active: #FB8500;    /* 强调色激活态，橙色 */
+
+  /* 中性色系 */
+  --neutral: #457B9D;         /* 中性色，深蓝灰色 */
+  --neutral-hover: #5C92B5;    /* 中性色悬停态 */
+  --neutral-active: #2E5266;   /* 中性色激活态 */
+
+  /* 基础背景色系 */
+  --base-100: #F0FCFF;         /* 主要背景色，清透的天蓝色 */
+  --base-200: #E0F7FA;         /* 次要背景色，淡蓝色 */
+  --base-300: #B2EBF2;         /* 三级背景色，浅蓝绿色 */
+  --base-content: #1D3557;     /* 基础内容色，深邃的藏青色 */
+
+  /* 功能色系 */
+  --info: #48CAE4;            /* 信息色，清爽的蓝色 */
+  --info-content: #FFFFFF;     /* 信息色上的文本色 */
+  --success: #2CB67D;          /* 成功色，清新的绿色 */
+  --success-content: #FFFFFF;  /* 成功色上的文本色 */
+  --warning: #FFB703;         /* 警告色，明亮的金色 */
+  --warning-content: #1D3557; /* 警告色上的文本色 */
+  --error: #FF6B6B;          /* 错误色，珊瑚红 */
+  --error-content: #FFFFFF;   /* 错误色上的文本色 */
+
+  /* 文本色系 */
+  --text-base: #1D3557;      /* 基础文本色，深邃的藏青色 */
+  --text-muted: #457B9D;     /* 次要文本色，深蓝灰色 */
+  --text-disabled: #A8DADC;   /* 禁用文本色，淡蓝色 */
+  --text-placeholder: #CAF0F8;/* 占位文本色，极淡的蓝色 */
+
+  /* 边框色系 */
+  --border-base: #90E0EF;    /* 基础边框色，中等蓝色 */
+  --border-light: #CAF0F8;    /* 浅色边框，淡蓝色 */
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(0, 180, 216, 0.05);
+  --shadow-md: rgba(0, 180, 216, 0.1);
+  --shadow-lg: rgba(0, 180, 216, 0.15);
+}
+
+/* 秋季主题 */
+[data-theme="autumn"] {
+  /* 滚动条样式 */
+  --scrollbar-track: #EDD6C4;      /* 滚动条轨道颜色，使用暖褐色 */
+  --scrollbar-thumb: #E76F51;       /* 滚动条滑块颜色，使用主色调 */
+  --scrollbar-thumb-hover: #F4A261;  /* 滚动条滑块悬停颜色，使用主色调的hover状态 */
+
+  /* 基础色板 - 品牌标识色系 */
+  --primary: #E76F51;          /* 主色，暖橙色，象征秋日落叶 */
+  --primary-hover: #F4A261;    /* 主色悬停态，浅橙色 */
+  --primary-active: #D65B3E;   /* 主色激活态，深橙色 */
+  --secondary: #F4A261;        /* 次色，杏橙色，象征丰收 */
+  --secondary-hover: #FAB87F;  /* 次色悬停态，浅杏色 */
+  --secondary-active: #E68A43; /* 次色激活态，深杏色 */
+  --accent: #2A9D8F;          /* 强调色，青绿色，象征秋日松柏 */
+  --accent-hover: #40B5A7;    /* 强调色悬停态，浅青绿色 */
+  --accent-active: #1F7A6F;    /* 强调色激活态，深青绿色 */
+
+  /* 中性色系 */
+  --neutral: #6D597A;         /* 中性色，优雅的紫灰色 */
+  --neutral-hover: #846B92;    /* 中性色悬停态 */
+  --neutral-active: #564662;   /* 中性色激活态 */
+
+  /* 基础背景色系 */
+  --base-100: #FDF6E3;         /* 主要背景色，温暖的米色 */
+  --base-200: #F5E6D3;         /* 次要背景色，浅杏色 */
+  --base-300: #EDD6C4;         /* 三级背景色，暖褐色 */
+  --base-content: #264653;     /* 基础内容色，深青灰色 */
+
+  /* 功能色系 */
+  --info: #2A9D8F;            /* 信息色，青绿色 */
+  --info-content: #FFFFFF;     /* 信息色上的文本色 */
+  --success: #95A46E;          /* 成功色，橄榄绿 */
+  --success-content: #FFFFFF;  /* 成功色上的文本色 */
+  --warning: #F4A261;         /* 警告色，杏橙色 */
+  --warning-content: #264653; /* 警告色上的文本色 */
+  --error: #E76F51;          /* 错误色，暖橙红 */
+  --error-content: #FFFFFF;   /* 错误色上的文本色 */
+
+  /* 文本色系 */
+  --text-base: #264653;      /* 基础文本色，深青灰色 */
+  --text-muted: #6D597A;     /* 次要文本色，紫灰色 */
+  --text-disabled: #B7B4B0;   /* 禁用文本色，暖灰色 */
+  --text-placeholder: #D4C7B9;/* 占位文本色，浅褐色 */
+
+  /* 边框色系 */
+  --border-base: #EDD6C4;    /* 基础边框色，暖褐色 */
+  --border-light: #F5E6D3;    /* 浅色边框，浅杏色 */
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(231, 111, 81, 0.05);
+  --shadow-md: rgba(231, 111, 81, 0.1);
+  --shadow-lg: rgba(231, 111, 81, 0.15);
+}
+
+/* 冬季主题 */
+[data-theme="winter"] {
+  /* 滚动条样式 */
+  --scrollbar-track: #E2E8F0;      /* 滚动条轨道颜色，使用银灰色 */
+  --scrollbar-thumb: #94A3B8;       /* 滚动条滑块颜色，使用主色调 */
+  --scrollbar-thumb-hover: #CBD5E1;  /* 滚动条滑块悬停颜色，使用主色调的hover状态 */
+
+  /* 基础色板 - 品牌标识色系 */
+  --primary: #94A3B8;          /* 主色，静谧的银灰色，象征冬日天空 */
+  --primary-hover: #CBD5E1;    /* 主色悬停态，浅银色 */
+  --primary-active: #64748B;   /* 主色激活态，深灰色 */
+  --secondary: #E2E8F0;        /* 次色，珍珠白，象征积雪 */
+  --secondary-hover: #F1F5F9;  /* 次色悬停态，霜白色 */
+  --secondary-active: #CBD5E1; /* 次色激活态，浅灰色 */
+  --accent: #38BDF8;          /* 强调色，冰蓝色，象征冬日晴空 */
+  --accent-hover: #7DD3FC;    /* 强调色悬停态，浅蓝色 */
+  --accent-active: #0EA5E9;    /* 强调色激活态，深蓝色 */
+
+  /* 中性色系 */
+  --neutral: #475569;         /* 中性色，沉稳的灰色 */
+  --neutral-hover: #64748B;    /* 中性色悬停态 */
+  --neutral-active: #334155;   /* 中性色激活态 */
+
+  /* 基础背景色系 */
+  --base-100: #F8FAFC;         /* 主要背景色，霜雪白 */
+  --base-200: #F1F5F9;         /* 次要背景色，珍珠白 */
+  --base-300: #E2E8F0;         /* 三级背景色，银灰色 */
+  --base-content: #1E293B;     /* 基础内容色，深邃的墨色 */
+
+  /* 功能色系 */
+  --info: #38BDF8;            /* 信息色，冰蓝色 */
+  --info-content: #FFFFFF;     /* 信息色上的文本色 */
+  --success: #9CA3AF;          /* 成功色，柔和的灰色 */
+  --success-content: #FFFFFF;  /* 成功色上的文本色 */
+  --warning: #FCD34D;         /* 警告色，淡金色 */
+  --warning-content: #1E293B; /* 警告色上的文本色 */
+  --error: #DC2626;          /* 错误色，深红色 */
+  --error-content: #FFFFFF;   /* 错误色上的文本色 */
+
+  /* 文本色系 */
+  --text-base: #1E293B;      /* 基础文本色，深邃的墨色 */
+  --text-muted: #475569;     /* 次要文本色，沉稳的灰色 */
+  --text-disabled: #94A3B8;   /* 禁用文本色，银灰色 */
+  --text-placeholder: #CBD5E1;/* 占位文本色，珍珠白 */
+
+  /* 边框色系 */
+  --border-base: #E2E8F0;    /* 基础边框色，银灰色 */
+  --border-light: #F1F5F9;    /* 浅色边框，珍珠白 */
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(148, 163, 184, 0.05);
+  --shadow-md: rgba(148, 163, 184, 0.1);
+  --shadow-lg: rgba(148, 163, 184, 0.15);
+}
+
+/* 自定义主题 */
+[data-theme="myCustom"] {
+  /* 滚动条样式 */
+  --scrollbar-track: #D1D8B9;      /* 滚动条轨道颜色，使用浅绿灰色 */
+  --scrollbar-thumb: #FF6B6B;       /* 滚动条滑块颜色，使用主色调 */
+  --scrollbar-thumb-hover: #FF9E9E;  /* 滚动条滑块悬停颜色，使用主色调的hover状态 */
+
+  /* 基础色板 - 品牌标识色系 */
+  --primary: #FF6B6B;
+  --primary-hover: #FF9E9E;
+  --primary-active: #FF3838;
+  --secondary: #4ECDC4;
+  --secondary-hover: #7EDCD6;
+  --secondary-active: #2EBDB2;
+  --accent: #FFE66D;
+  --accent-hover: #FFED9E;
+  --accent-active: #FFDF3C;
+
+  /* 中性色系 */
+  --neutral: #2D3436;
+  --neutral-hover: #636E72;
+  --neutral-active: #2D3436;
+
+  /* 基础背景色系 */
+  --base-100: #F7F1E3;
+  --base-200: #E3E7D3;
+  --base-300: #D1D8B9;
+  --base-content: #2D3436;
+
+  /* 功能色系 */
+  --info: #17A2B8;
+  --info-content: #FFFFFF;
+  --success: #95E1D3;
+  --success-content: #2D3436;
+  --warning: #FCE38A;
+  --warning-content: #2D3436;
+  --error: #F38181;
+  --error-content: #FFFFFF;
+
+  /* 文本色系 */
+  --text-base: #2D3436;
+  --text-muted: #636E72;
+  --text-disabled: #B2BEC3;
+  --text-placeholder: #DFE6E9;
+
+  /* 边框色系 */
+  --border-base: #D1D8B9;
+  --border-light: #E3E7D3;
+
+  /* 阴影色系 */
+  --shadow-sm: rgba(45, 52, 54, 0.05);
+  --shadow-md: rgba(45, 52, 54, 0.1);
+  --shadow-lg: rgba(45, 52, 54, 0.15);
+}

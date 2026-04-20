@@ -1,0 +1,37 @@
+---
+import Stats from './Stats.astro';
+---
+
+<div class="relative p-[2px] rounded-[25px] bg-gradient-to-br from-cyan-100 via-blue-100 to-purple-100 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 shadow-[0_10px_30px_-10px_rgba(167,139,250,0.3)] dark:shadow-none animate-fade-in group">
+    <div class="relative bg-gradient-to-br from-white via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-slate-900 rounded-[23px] p-8 text-center transition-all duration-500 hover:shadow-inner">
+        <!-- 头像区 -->
+        <a href="/about" class="relative inline-block mb-6">
+            <!-- 渐变光晕外圈 (粉红 -> 紫 -> 青色) -->
+            <div class="absolute inset-[-6px] rounded-full bg-gradient-to-tr from-rose-400 via-purple-400 to-cyan-400 animate-spin-slow"></div>
+            <!-- 白色间隔层 (3px) -->
+            <div class="absolute inset-[-3px] rounded-full bg-white dark:bg-gray-900"></div>
+            <!-- 核心头像 -->
+            <img 
+                src="https://tuchuang.xrlfreedom.top/2026/04/19d23f3d87c7ac449c8abbe36a4edbf0.webp" 
+                class="relative w-24 h-24 rounded-full object-cover shadow-sm transition-transform duration-500 group-hover:scale-105" 
+                alt="Avatar" 
+            />
+        </a>
+
+        <!-- 博客标题 (Freedom Blog) -->
+        <h3 class="font-serif text-[22px] font-black text-gray-800 dark:text-gray-100 mb-6 tracking-tight leading-none">Freedom Blog</h3>
+
+        <!-- 统计数据区 (注入 Stats 组件) -->
+        <Stats />
+    </div>
+</div>
+
+<style>
+	@keyframes spin-slow {
+		from { transform: rotate(0deg); }
+		to { transform: rotate(360deg); }
+	}
+	.animate-spin-slow {
+		animation: spin-slow 8s linear infinite;
+	}
+</style>

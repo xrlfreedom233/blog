@@ -1,0 +1,44 @@
+// 响应式混合器
+@mixin responsive($breakpoint) {
+  @if $breakpoint == 'md' {
+    @media (min-width: 768px) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (min-width: 1024px) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (min-width: 1280px) { @content; }
+  }
+}
+
+// 暗色模式混合器
+@mixin dark-mode {
+  .dark & {
+    @content;
+  }
+}
+
+// 文本样式混合器
+@mixin text-style($size, $weight: normal, $line-height: 1.5) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+}
+
+// 过渡效果混合器
+@mixin transition($property: all, $duration: 200ms) {
+  transition: $property $duration ease-in-out;
+}
+
+// 弹性布局混合器
+@mixin flex($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// 网格布局混合器
+@mixin grid($columns: 1, $gap: $spacing-base) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}

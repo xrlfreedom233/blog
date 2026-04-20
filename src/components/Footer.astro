@@ -1,0 +1,57 @@
+---
+const currentYear = new Date().getFullYear();
+const footerConfig = {
+	animalImage: "/images/animals.webp",
+	slogan: "愿你眼中总有光，活成自己喜欢的模样",
+	icp: "京ICP备XXXXXXXX号",
+	icpLink: "https://beian.miit.gov.cn/",
+	author: "freedom"
+};
+---
+
+<div class="relative mt-20">
+	<!-- 动物装饰图 - 彻底贴合边缘 -->
+	<div class="fixed bottom-0 left-0 w-full z-[10] pointer-events-none select-none">
+		<div class="flex justify-center w-full">
+			<img
+				src={footerConfig.animalImage}
+				alt="动物装饰"
+				class="h-16 md:h-24 w-full object-contain object-bottom opacity-100"
+			/>
+		</div>
+	</div>
+
+	<footer class="relative z-20 bg-white/80 dark:bg-gray-900/80 border-t border-gray-100 dark:border-gray-800 py-12 backdrop-blur-md mt-16">
+		<div class="container mx-auto px-4">
+			<!-- 个性化标语 -->
+			<div class="mb-8 text-center">
+				<p class="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-lg font-medium italic text-transparent dark:from-teal-300 dark:to-blue-300 animate-fade-in">
+					{footerConfig.slogan}
+				</p>
+			</div>
+
+			<div class="flex flex-col items-center space-y-4 text-sm text-gray-500 dark:text-gray-400">
+				<div class="flex flex-wrap justify-center gap-6">
+					<a href={footerConfig.icpLink} target="_blank" class="hover:text-primary transition-colors">
+						{footerConfig.icp}
+					</a>
+					<span>&copy; {currentYear} {footerConfig.author}</span>
+					<div class="flex items-center space-x-1">
+						<span>Powered by</span>
+						<a href="https://astro.build" target="_blank" class="font-bold hover:text-primary transition-colors">Astro</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div>
+
+<style>
+	.animate-fade-in {
+		animation: fadeIn 1s ease-out;
+	}
+	@keyframes fadeIn {
+		from { opacity: 0; transform: translateY(10px); }
+		to { opacity: 1; transform: translateY(0); }
+	}
+</style>

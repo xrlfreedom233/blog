@@ -1,0 +1,32 @@
+---
+import Ripple from './common/Ripple.astro';
+const { title = "遇事不决，可问春风", subtitle = "记录生活，分享思考" } = Astro.props;
+const backgroundImage = "/images/imbg.avif";
+---
+
+<section class="relative h-[45vh] min-h-[350px] w-full overflow-hidden flex items-center justify-center">
+	<!-- 背景图片 -->
+	<div class="absolute inset-0 z-0">
+		<img 
+			src={backgroundImage} 
+			alt="Hero Background" 
+			class="h-full w-full object-cover brightness-[0.9] dark:brightness-[0.7] transition-all duration-700"
+		/>
+		<div class="absolute inset-0 bg-black/10 dark:bg-black/30"></div>
+	</div>
+
+	<!-- 文字内容 -->
+	<div class="relative z-10 text-center px-4 max-w-4xl">
+		<h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] animate-fade-in">
+			{title}
+		</h1>
+		<p class="text-xl md:text-2xl text-white/95 font-medium drop-shadow-md animate-fade-in italic" style="animation-delay: 200ms">
+			{subtitle}
+		</p>
+	</div>
+
+	<!-- 动态波浪效果 -->
+	<div class="absolute bottom-0 left-0 w-full z-10">
+		<Ripple />
+	</div>
+</section>

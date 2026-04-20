@@ -1,0 +1,132 @@
+---
+import ThemeSwitch from './common/ThemeSwitch.astro';
+import Search from './common/Search.astro';
+
+interface MenuItem {
+	name: string;
+	href: string;
+	children?: MenuItem[];
+}
+
+const menuItems: MenuItem[] = [
+	{ name: '首页', href: '/' },
+	{ name: '归档', href: '/archives' },
+	{ name: '分类', href: '/categories' },
+	{ name: '标签', href: '/tags' },
+	{ name: '相册', href: '/photos' },
+	{ name: '瞬间', href: '/moments' },
+	{ name: '友情链接', href: '/links' },
+	{ name: '关于我', href: '/about' },
+];
+
+const site = {
+	title: "freedom",
+	logo: "https://tuchuang.xrlfreedom.top/2026/04/19d23f3d87c7ac449c8abbe36a4edbf0.webp"
+};
+---
+
+<header
+  x-data="{ isVisible: true, lastScrollY: 0, isScrolled: false, mobileMenuOpen: false }"
+  x-init="
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      isVisible = currentScrollY === 0 || currentScrollY < lastScrollY;
+      lastScrollY = currentScrollY;
+      isScrolled = currentScrollY > 50;
+    });
+  "
+  class="fixed top-0 left-0 right-0 z-40 transition-all duration-300"
+  :class="{
+    'translate-y-0': isVisible,
+    '-translate-y-full': !isVisible,
+    'bg-base-100 shadow-xl': isScrolled,
+    'bg-transparent': !isScrolled
+  }"
+>
+  <nav class="container mx-auto px-6">
+    <div class="flex h-16 items-center justify-between">
+      <div class="flex items-center">
+        <a href="/" class="flex items-center space-x-3 group">
+          <img
+            src={site.logo}
+            alt="Logo"
+            class="h-9 w-9 rounded-full transition-all duration-500 group-hover:rotate-[360deg] shadow-md ring-2 ring-white/20 object-cover"
+          />
+          <span 
+            class="text-xl font-bold tracking-tight transition-colors duration-300"
+            :class="isScrolled ? 'text-text-base' : 'text-white drop-shadow-md'"
+          >
+            {site.title}
+          </span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="ml-10 hidden md:flex space-x-1">
+          {menuItems.map(item => (
+            <div class="relative group">
+              <a
+                href={item.href}
+                class="px-4 py-2 text-sm font-bold transition-all duration-300 relative inline-block"
+                :class="isScrolled ? 'text-text-base hover:text-primary' : 'text-white/90 hover:text-white drop-shadow-sm'"
+              >
+                {item.name}
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="transition-colors duration-300" :class="isScrolled ? 'text-text-base' : 'text-white'">
+          <Search />
+        </div>
+        <ThemeSwitch />
+        
+        <!-- Mobile Menu Button -->
+        <button
+          @click="mobileMenuOpen = !mobileMenuOpen"
+          class="md:hidden p-2 transition-colors relative z-50"
+          :class="(isScrolled || mobileMenuOpen) ? 'text-text-base' : 'text-white'"
+        >
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div 
+    x-show="mobileMenuOpen" 
+    x-cloak
+    class="fixed inset-0 z-40 md:hidden"
+  >
+    <div @click="mobileMenuOpen = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"></div>
+    <div 
+      x-show="mobileMenuOpen"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="translate-x-full"
+      x-transition:enter-end="translate-x-0"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="translate-x-0"
+      x-transition:leave-end="translate-x-full"
+      class="absolute right-0 top-0 bottom-0 w-72 bg-base-100 shadow-2xl p-8 pt-20"
+    >
+      <div class="flex flex-col space-y-6">
+        {menuItems.map(item => (
+          <a 
+            href={item.href} 
+            class="text-xl font-bold text-text-base hover:text-primary transition-all flex items-center justify-between group"
+            @click="mobileMenuOpen = false"
+          >
+            <span>{item.name}</span>
+            <span class="icon-[tabler--chevron-right] w-5 h-5 opacity-0 group-hover:opacity-100 transition-all"></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</header>

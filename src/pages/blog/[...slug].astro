@@ -1,0 +1,134 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Ripple from '../../components/common/Ripple.astro';
+import readingTime from 'reading-time';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const { Content } = await post.render();
+const { title, description, pubDate, heroImage, tags, categories } = post.data;
+const stats = readingTime(post.body);
+---
+
+<BaseLayout title={`${title} | freedom`} description={description}>
+	<Header />
+	
+	<!-- 找回的大图区域 (Post Hero) -->
+	<section class="relative h-[50vh] min-h-[400px] w-full overflow-hidden flex items-center justify-center">
+		<div class="absolute inset-0 z-0">
+			<img 
+				src={heroImage || "/images/imbg.avif"} 
+				alt={title} 
+				class="h-full w-full object-cover brightness-[0.6] dark:brightness-[0.4] transition-all duration-700"
+			/>
+			<div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-base-100"></div>
+		</div>
+
+		<!-- 文字内容 -->
+		<div class="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
+			<div class="flex flex-wrap justify-center gap-2 mb-6">
+				{categories && categories.map(cat => (
+					<a href={`/categories/${cat}`} class="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg">
+						{cat}
+					</a>
+				))}
+				{tags && tags.map(tag => (
+					<a href={`/tags/${tag}`} class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black text-white uppercase tracking-wider border border-white/30">
+						#{tag}
+					</a>
+				))}
+			</div>
+			<h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg leading-tight">
+				{title}
+			</h1>
+			<div class="flex items-center justify-center text-white/90 text-sm gap-4 drop-shadow-md">
+				<span>📅 {pubDate.toLocaleDateString('zh-CN')}</span>
+				<span class="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
+				<span>⏱️ {Math.ceil(stats.minutes)} 分钟阅读</span>
+			</div>
+		</div>
+
+		<!-- 底部波浪衔接 -->
+		<div class="absolute bottom-0 left-0 w-full z-10">
+			<Ripple />
+		</div>
+	</section>
+
+	<!-- 修改后的正文区域：使用 mx-auto 和 max-w 确保居中 -->
+	<main class="container mx-auto px-4 py-16 max-w-6xl">
+		<div class="flex flex-col lg:flex-row gap-16 justify-center">
+			
+			<!-- Article Content (专注阅读宽度) -->
+			<article class="w-full lg:max-w-[800px] animate-fade-in" style="animation-delay: 300ms">
+				<div id="articleContentId" class="prose prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-img:rounded-2xl prose-pre:bg-gray-900 dark:prose-pre:bg-black/50">
+					<Content />
+				</div>
+			</article>
+
+			<!-- TOC Sidebar (右侧悬浮) -->
+			<aside class="hidden xl:block w-64">
+				<div class="sticky top-24" x-data="{ 
+					catalog: [], 
+					activeIndex: -1,
+					init() {
+						this.buildCatalog();
+						window.addEventListener('scroll', () => this.updateActiveHeading());
+					},
+					buildCatalog() {
+						const headings = Array.from(document.querySelectorAll('#articleContentId h1, #articleContentId h2, #articleContentId h3'));
+						this.catalog = headings.map(h => ({
+							text: h.textContent,
+							id: h.id || (h.id = h.textContent.toLowerCase().replace(/\s+/g, '-')),
+							level: parseInt(h.tagName[1])
+						}));
+					},
+					updateActiveHeading() {
+						const headings = document.querySelectorAll('#articleContentId h1, #articleContentId h2, #articleContentId h3');
+						let currentId = '';
+						headings.forEach(h => {
+							const top = h.getBoundingClientRect().top;
+							if (top < 150) currentId = h.id;
+						});
+						this.activeIndex = this.catalog.findIndex(c => c.id === currentId);
+					}
+				}" x-init="init()">
+					<div class="bg-base-100 p-6 rounded-2xl shadow-sm border border-border-base/50">
+						<h3 class="text-xs font-black mb-4 dark:text-white uppercase tracking-widest text-primary">
+							Catalog
+						</h3>
+						<nav class="space-y-1 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+							<template x-for="(item, index) in catalog" :key="index">
+								<a 
+									:href="'#' + item.id"
+									class="block py-2 text-xs transition-all duration-200 rounded-lg px-2"
+									:class="{
+										'font-bold': item.level === 1,
+										'ml-0': item.level === 1,
+										'ml-3': item.level === 2,
+										'ml-6': item.level === 3,
+										'text-text-muted hover:text-primary hover:bg-primary/5': activeIndex !== index,
+										'text-primary bg-primary/10': activeIndex === index
+									}"
+									x-text="item.text"
+								></a>
+							</template>
+						</nav>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</main>
+
+	<Footer />
+</BaseLayout>

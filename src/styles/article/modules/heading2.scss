@@ -1,0 +1,76 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'sass:color';
+
+
+.article-content {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--md-theme-heading-color);
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 2rem 0 1.2rem;
+  transition: color 0.3s ease;
+
+  &::before {
+    margin-right: 0.5rem;
+    opacity: 0.8;
+  }
+}
+
+h1 {
+  font-size: 2.2rem;
+  border-bottom: 2px solid var(--md-theme-border-color);
+  padding-bottom: 0.5rem;
+
+  &::before {
+    content: '🌴';
+  }
+}
+
+h2 {
+  font-size: 1.8rem;
+  border-bottom: var(--md-theme-heading-2-border);
+  padding-bottom: 0.4rem;
+
+  &::before {
+    content: '🥀';
+  }
+}
+
+h3 {
+  font-size: 1.5rem;
+
+  &::before {
+    content: '☘️';
+  }
+}
+
+h4 {
+  font-size: 1.3rem;
+
+  &::before {
+    content: '🍀';
+  }
+}
+
+h5 {
+  font-size: 1.2rem;
+
+  &::before {
+    content: '🌱';
+  }
+}
+
+h6 {
+  font-size: 1.1rem;
+
+  &::before {
+    content: '🍃';
+  }
+}
+}

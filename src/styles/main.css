@@ -1,0 +1,85 @@
+@import './theme/theme.css';
+@import './theme/scrollbar.css';
+@import './article/index.scss';
+
+/* 基础样式 */
+body {
+  background: var(--base-100);
+  color: var(--text-base);
+  font-family: blog-font, sans-serif;
+  overflow-x: hidden;
+}
+
+/* 代码块终极适配方案 (Shiki CSS Variables) */
+:root {
+  --shiki-color-text: #24292e;
+  --shiki-color-background: #f6f8fa;
+  --shiki-token-constant: #005cc5;
+  --shiki-token-string: #032f62;
+  --shiki-token-comment: #6a737d;
+  --shiki-token-keyword: #d73a49;
+  --shiki-token-parameter: #e36209;
+  --shiki-token-function: #6f42c1;
+  --shiki-token-string-expression: #22863a;
+  --shiki-token-punctuation: #24292e;
+  --shiki-token-link: #005cc5;
+  --shiki-token-property: #005cc5;
+  --shiki-token-variable: #e36209;
+}
+
+[data-theme="dark"], .dark {
+  --shiki-color-text: #e1e4e8;
+  --shiki-color-background: #0d1117;
+  --shiki-token-constant: #79c0ff;
+  --shiki-token-string: #a5d6ff;
+  --shiki-token-comment: #8b949e;
+  --shiki-token-keyword: #ff7b72;
+  --shiki-token-parameter: #ffa657;
+  --shiki-token-function: #d2a8ff;
+  --shiki-token-string-expression: #7ee787;
+  --shiki-token-punctuation: #e1e4e8;
+  --shiki-token-link: #79c0ff;
+  --shiki-token-property: #79c0ff;
+  --shiki-token-variable: #ffa657;
+}
+
+/* 春夏秋冬背景微调 - 保持高对比度 */
+[data-theme="spring"] { --shiki-color-background: #efdfd8; }
+[data-theme="summer"] { --shiki-color-background: #d0f0f7; }
+[data-theme="autumn"] { --shiki-color-background: #ecdcc3; }
+[data-theme="winter"] { --shiki-color-background: #e5ecf3; }
+
+pre {
+  background-color: var(--shiki-color-background) !important;
+  color: var(--shiki-color-text) !important;
+  border: 1px solid var(--border-base);
+  border-radius: 1.25rem;
+  padding: 1rem 1.25rem !important;
+  overflow-x: auto;
+  line-height: 1.5;
+  font-size: 0.85rem;
+}
+
+/* 动画定义 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+
+/* 滚动条样式 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+[x-cloak] { display: none !important; }
+
+/* 字体相关 */
+@font-face {
+  font-family: blog-font;
+  src: url("./font/font.woff2");
+}
