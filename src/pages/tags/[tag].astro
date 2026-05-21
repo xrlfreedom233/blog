@@ -26,7 +26,7 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts, currentPage, totalPages } = Astro.props;
 const pagePosts = posts.slice(0, PAGE_SIZE);
-const getPageHref = (page: number) => page === 1 ? `/tags/${tag}` : `/tags/${tag}/${page}/`;
+const getPageHref = (page: number) => page === 1 ? `/tags/${tag}/` : `/tags/${tag}/${page}/`;
 
 const allPosts = await getCollection('blog');
 const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))].slice(0, 10);
@@ -58,7 +58,7 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))].sli
           </h3>
           <div class="flex flex-wrap gap-2">
             {allTags.map(t => (
-	              <a href={`/tags/${t}`} class={`px-3 py-1.5 text-base font-bold rounded-lg transition-all ${t === tag ? 'bg-primary text-white' : 'bg-base-200/50 text-text-muted/60 hover:text-primary'}`}>
+	              <a href={`/tags/${t}/`} class={`px-3 py-1.5 text-base font-bold rounded-lg transition-all ${t === tag ? 'bg-primary text-white' : 'bg-base-200/50 text-text-muted/60 hover:text-primary'}`}>
                 #{t}
               </a>
             ))}

@@ -57,7 +57,7 @@ const searchList = posts.map((post) => ({
           <div class="p-2 space-y-1">
             <template x-for="result in results" :key="result.slug">
               <a 
-                :href="'/blog/' + result.slug"
+	                :href="'/blog/' + result.slug + '/'"
                 class="block p-4 rounded-xl hover:bg-base-200 transition-colors"
                 @click="searchOpen = false"
               >

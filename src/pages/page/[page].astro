@@ -68,7 +68,7 @@ const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
 							<ul class="space-y-4 list-none p-0 m-0">
 								{categories.map(([name, count]) => (
 									<li>
-										<a href={`/categories/${name}`} class="flex items-center justify-between group no-underline text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+											<a href={`/categories/${name}/`} class="flex items-center justify-between group no-underline text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
 											<span class="text-base font-bold">{name}</span>
 												<span class="text-base font-mono opacity-40">({count})</span>
 										</a>
@@ -86,7 +86,7 @@ const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
 							</h3>
 							<div class="flex flex-wrap gap-2.5">
 								{tags.map(tag => (
-										<a href={`/tags/${tag}`} class="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-base font-bold text-gray-500 dark:text-gray-400 rounded-lg transition-all no-underline">
+										<a href={`/tags/${tag}/`} class="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-base font-bold text-gray-500 dark:text-gray-400 rounded-lg transition-all no-underline">
 										#{tag}
 									</a>
 								))}

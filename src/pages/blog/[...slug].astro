@@ -39,12 +39,12 @@ const stats = readingTime(post.body);
 		<div class="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
 			<div class="flex flex-wrap justify-center gap-2 mb-6">
 				{categories && categories.map(cat => (
-					<a href={`/categories/${cat}`} class="px-4 py-1.5 bg-primary text-white rounded-full text-base font-black uppercase tracking-wider shadow-lg">
+					<a href={`/categories/${cat}/`} class="px-4 py-1.5 bg-primary text-white rounded-full text-base font-black uppercase tracking-wider shadow-lg">
 						{cat}
 					</a>
 				))}
 				{tags && tags.map(tag => (
-					<a href={`/tags/${tag}`} class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-base font-black text-white uppercase tracking-wider border border-white/30">
+					<a href={`/tags/${tag}/`} class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-base font-black text-white uppercase tracking-wider border border-white/30">
 						#{tag}
 					</a>
 				))}

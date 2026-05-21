@@ -24,7 +24,7 @@ const categoryList = Object.entries(categories).sort((a, b) => b[1] - a[1]);
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {categoryList.map(([name, count], index) => (
         <a 
-          href={`/categories/${name}`}
+	          href={`/categories/${name}/`}
           class="group p-8 bg-base-100 rounded-3xl border border-border-base shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-300 animate-fade-in-up"
           style={`animation-delay: ${index * 100}ms`}
         >

@@ -13,7 +13,7 @@ const posts = (await getCollection('blog'))
     </h3>
     <div class="space-y-4">
         {posts.map((post, index) => (
-            <a href={`/blog/${post.slug}`} class="flex items-start gap-3 group">
+            <a href={`/blog/${post.slug}/`} class="flex items-start gap-3 group">
                 <span class={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded text-base font-bold transition-colors ${
                     index < 3
                     ? 'bg-orange-100 dark:bg-orange-950/50 text-orange-500'

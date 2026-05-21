@@ -35,7 +35,7 @@ export async function getStaticPaths() {
 const { category } = Astro.params;
 const { posts, currentPage, totalPages } = Astro.props;
 const pagePosts = posts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
-const getPageHref = (page: number) => page === 1 ? `/categories/${category}` : `/categories/${category}/${page}/`;
+const getPageHref = (page: number) => page === 1 ? `/categories/${category}/` : `/categories/${category}/${page}/`;
 
 const allPosts = await getCollection('blog');
 const categoryCounts = allPosts.reduce((acc, post) => {
@@ -71,7 +71,7 @@ const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
 					</h3>
 					<div class="space-y-4">
 						{categories.map(([name, count]) => (
-							<a href={`/categories/${name}`} class="flex items-center justify-between group">
+							<a href={`/categories/${name}/`} class="flex items-center justify-between group">
 									<span class={`text-lg font-semibold group-hover:text-primary transition-colors ${name === category ? 'text-primary' : 'text-text-base/60'}`}>{name}</span>
 									<span class="text-base font-bold text-text-muted/40 tracking-tighter">({count})</span>
 							</a>
