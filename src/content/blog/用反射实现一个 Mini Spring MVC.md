@@ -11,8 +11,6 @@ tags: []
 
 ## 1\. 获取 Class 对象
 
-
-
 ```
 Class<?> clazz1 = Class.forName("com.example.User");//灵活
 Class<?> clazz2 = User.class;//编译期就确定类型，最快最高效
@@ -20,11 +18,13 @@ Class<?> clazz3 = new User().getClass();//需要实例化对象
 ```
 
 ## 2\. 创建对象
+
 ```
 Object obj = clazz.getDeclaredConstructor().newInstance();//编译期不知道类型，运行期动态创建
 ```
 
 ## 3\. 获取方法
+
 ```
 Method[] methods = clazz.getMethods();//返回所有公共成员方法数组，包括继承
 Method[] methods = clazz.getDeclaredMethods();//返回所有成员方法数组，不包括继承
@@ -33,6 +33,7 @@ Method method = clazz.getDeclaredMethod("getUserInfo");//返回单个成员方�
 ```
 
 ## 4\. 获取注解
+
 ```
 if (method.isAnnotationPresent(RequestMapping.class)) {
     RequestMapping mapping = method.getAnnotation(RequestMapping.class);
@@ -41,11 +42,13 @@ if (method.isAnnotationPresent(RequestMapping.class)) {
 ```
 
 ## 5\. 动态执行方法
+
 ```
 method.invoke(obj);//方法是谁、在哪个类、什么时候执行 —— 全部运行时决定 
 ```
 
 # 二、项目结构设计
+
 ```
 com.jincheng.fensheDemo
 ├── annotation
@@ -61,6 +64,7 @@ com.jincheng.fensheDemo
 # 三、定义注解
 
 ## 1\. @RestController
+
 ```
 @Target(ElementType.TYPE)//这个注解只能贴在类、接口、枚举上，不能贴在方法或字段上。
 @Retention(RetentionPolicy.RUNTIME)//这个注解在运行时保留，反射可以读到它。
@@ -71,6 +75,7 @@ public @interface RestController {
 > 标记：这是一个控制器
 
 ## 2\. @RequestMapping
+
 ```
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -82,6 +87,7 @@ public @interface RequestMapping {
 > 标记：方法对应的 URL
 
 # 四、编写 Controller
+
 ```
 @RestController
 public class UserController {
@@ -101,12 +107,14 @@ public class UserController {
 # 五、反射核心：DispatcherServlet
 
 ## 1\. 核心数据结构
+
 ```
 private Map<String, Method> handlerMapping = new HashMap<>();//路由表 路径->对应的方法（method对象）
 private Map<Class<?>, Object> controllerMap = new HashMap<>();简易 IoC 容器 Controller的Class -> 对应的实例对象
 ```
 
 ## 2\. 初始化（扫描 + 注册）
+
 ```
 /**
      * 初始化框架：传入需要被扫描的类
@@ -138,6 +146,7 @@ public void init(Class<?>... classes) throws Exception {
 ```
 
 ## 3\. 请求分发（动态调用）
+
 ```
 /**
      * 模拟处理 HTTP 请求
@@ -160,6 +169,7 @@ public Object dispatch(String path) throws Exception {
 ```
 
 # 六、启动测试
+
 ```
 public static void main(String[] args) {
     DispatcherServlet dispatcher = new DispatcherServlet();

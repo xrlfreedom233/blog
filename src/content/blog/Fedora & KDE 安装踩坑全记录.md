@@ -23,8 +23,6 @@ tags: []
 
 解决方法是编辑 QQ 的 `.desktop` 启动文件，在 `Exec=` 行末尾追加以下参数：
 
-
-
 ```
 --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime %U
 ```

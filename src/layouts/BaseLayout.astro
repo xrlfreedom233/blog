@@ -53,31 +53,40 @@ import { ViewTransitions } from 'astro:transitions';
 			<span class="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">回到顶部</span>
 		</button>
 
-		<script>
-			// 全局脚本逻辑：代码复制 & 回到顶部
-			function setupGlobalInteractions() {
-				// 1. 回到顶部
-				const btt = document.getElementById('back-to-top');
-				if (btt) {
-					window.addEventListener('scroll', () => {
-						if (window.scrollY > 400) {
-							btt.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-						} else {
-							btt.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+			<script>
+				// 全局脚本逻辑：代码复制 & 回到顶部
+				function setupGlobalInteractions() {
+					// 1. 回到顶部
+					const btt = document.getElementById('back-to-top');
+					if (btt) {
+						if ((window as any).__freedomBackToTopScrollHandler) {
+							window.removeEventListener('scroll', (window as any).__freedomBackToTopScrollHandler);
 						}
-					});
-					btt.addEventListener('click', () => {
-						window.scrollTo({ top: 0, behavior: 'smooth' });
-					});
-				}
 
-				// 2. 代码块一键复制
-				let blocks = document.querySelectorAll('pre');
-				blocks.forEach((block) => {
-					if (navigator.clipboard) {
-						let button = document.createElement('button');
-						button.innerText = '复制';
-						button.className = 'copy-code-button';
+						const handleBackToTopScroll = () => {
+							if (window.scrollY > 400) {
+								btt.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+							} else {
+								btt.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+							}
+						};
+
+						(window as any).__freedomBackToTopScrollHandler = handleBackToTopScroll;
+						window.addEventListener('scroll', handleBackToTopScroll);
+						handleBackToTopScroll();
+
+						btt.onclick = () => {
+							window.scrollTo({ top: 0, behavior: 'smooth' });
+						};
+					}
+
+					// 2. 代码块一键复制
+					let blocks = document.querySelectorAll('pre');
+					blocks.forEach((block) => {
+						if (navigator.clipboard && !block.querySelector('.copy-code-button')) {
+							let button = document.createElement('button');
+							button.innerText = '复制';
+							button.className = 'copy-code-button';
 						block.appendChild(button);
 
 						button.addEventListener('click', async () => {

@@ -11,13 +11,12 @@ appimage安装教程(注意：appimage包不能删)：
 
 1.加执行权限
 
-
-
 ```
 chmod +x Applications/WeChat_Dev_Tools_v2.01.2510280-2_x86_64_linux.AppImage 
 ```
 
 2.添加desktop
+
 ```
 cat > ~/.local/share/applications/wechat-devtools.desktop << 'EOF'
 [Desktop Entry]
@@ -31,6 +30,7 @@ EOF
 ```
 
 3.更新配置
+
 ```
 update-desktop-database ~/.local/share/applications/
 ```

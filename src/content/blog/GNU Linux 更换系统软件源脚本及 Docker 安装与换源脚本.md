@@ -9,19 +9,19 @@ tags: []
 
 前言：我们日常在进行docker拉取镜像时，因为仓库在国外，拉取速度是十分缓慢（而且极有可能会失败），我们就可以修改docker镜像源来加速。这里我提供一个一键换源脚本
 
-
-
 ```
 bash <(curl -sSL https://linuxmirrors.cn/docker.sh)
 ```
 
 注意wsl安装的用户，执行一下命令，因为以上命令wsl老版本并不支持
+
 ```
 curl -sSL -o docker.sh https://linuxmirrors.cn/docker.sh
 sudo bash docker.sh
 ```
 
 执行完可以删除脚本：
+
 ```
 rm docker.sh
 ```

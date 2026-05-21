@@ -5,6 +5,7 @@ const posts = await getCollection('blog');
 const searchList = posts.map((post) => ({
   title: post.data.title,
   description: post.data.description || '',
+  content: post.body,
   slug: post.slug,
   tags: post.data.tags || [],
 }));
@@ -84,7 +85,12 @@ const searchList = posts.map((post) => ({
 
     const posts = JSON.parse(root.dataset.posts || '[]');
     const fuse = new Fuse(posts, {
-      keys: ['title', 'description', 'tags'],
+      keys: [
+        { name: 'title', weight: 0.5 },
+        { name: 'description', weight: 0.25 },
+        { name: 'content', weight: 0.2 },
+        { name: 'tags', weight: 0.05 },
+      ],
       threshold: 0.4
     });
 

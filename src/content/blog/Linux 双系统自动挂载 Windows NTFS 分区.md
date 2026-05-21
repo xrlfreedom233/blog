@@ -21,8 +21,6 @@ tags: []
 
 Linux 桌面环境下，插入设备或检测到未挂载分区时，挂载流程如下：
 
-
-
 ```
 开机检测到未挂载分区
         ↓
@@ -67,12 +65,13 @@ systemd 时代，`/run` 是 tmpfs 内存文件系统，适合动态设备
 ## 第一步：查看磁盘信息
 
 bash
-```
-bash
+
+```bash
 lsblk -f
 ```
 
 找到需要挂载的 NTFS 分区及其 UUID，例如：
+
 ```
 nvme1n1p3  ntfs  C盘    72FCEB05FCEAC289
 nvme0n1p2  ntfs  新加卷 54126DB3126D9B2E
@@ -87,8 +86,8 @@ nvme0n1p2  ntfs  新加卷 54126DB3126D9B2E
 ### Fedora
 
 bash
-```
-bash
+
+```bash
 sudo dnf install ntfs-3g
 ```
 
@@ -96,19 +95,16 @@ sudo dnf install ntfs-3g
 > 
 > bash
 > 
-> 
-```
-bash
+> ```bash
 > rpm -q ntfs-3g
 > findmnt -o TARGET,FSTYPE /mnt/C盘
-> 
-```
+> ```
 
 ### Ubuntu
 
 bash
-```
-bash
+
+```bash
 sudo apt install ntfs-3g
 ```
 
@@ -119,8 +115,8 @@ sudo apt install ntfs-3g
 ## 第三步：创建挂载点
 
 bash
-```
-bash
+
+```bash
 sudo mkdir -p /mnt/C盘 /mnt/新加卷
 ```
 
@@ -129,12 +125,13 @@ sudo mkdir -p /mnt/C盘 /mnt/新加卷
 ## 第四步：编辑 fstab
 
 bash
-```
-bash
+
+```bash
 sudo nano /etc/fstab
 ```
 
 在文件末尾添加：
+
 ```
 # Windows C盘
 UUID=72FCEB05FCEAC289  /mnt/C盘    ntfs-3g  defaults,uid=1000,gid=1000,nofail  0  0
@@ -166,8 +163,8 @@ UUID=54126DB3126D9B2E  /mnt/新加卷  ntfs-3g  defaults,uid=1000,gid=1000,nofai
 ## 第五步：测试
 
 bash
-```
-bash
+
+```bash
 # 验证 fstab 语法
 sudo findmnt --verify
 
@@ -179,6 +176,7 @@ lsblk
 ```
 
 正常输出应类似：
+
 ```
 nvme1n1p3  ...  /mnt/C盘
 nvme0n1p2  ...  /mnt/新加卷
@@ -187,8 +185,8 @@ nvme0n1p2  ...  /mnt/新加卷
 查看分区内容确认可访问：
 
 bash
-```
-bash
+
+```bash
 ls /mnt/C盘
 ls /mnt/新加卷
 ```
@@ -200,6 +198,7 @@ ls /mnt/新加卷
 ### Windows 快速启动问题
 
 如果 Windows 开启了**快速启动**（Fast Startup），关机时实际上是休眠而非完全关机，NTFS 分区会处于锁定状态，Linux 下挂载时会报错：
+
 ```
 Mount is denied because the NTFS volume is already exclusively opened.
 ```
@@ -213,8 +212,8 @@ Windows 安装时会在系统盘后面创建一个 **WinRE 恢复分区**（通�
 ### 重启后验证
 
 bash
-```
-bash
+
+```bash
 sudo reboot
 # 重启后执行
 lsblk

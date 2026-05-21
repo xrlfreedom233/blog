@@ -111,10 +111,7 @@ pacman
 
 以 Ubuntu 为例，常用操作：
 
-
-
-```
-bash
+```bash
 sudo apt update              # 更新软件源列表（先运行这个）
 sudo apt install 软件名       # 安装软件
 sudo apt remove 软件名        # 卸载软件
@@ -128,8 +125,8 @@ sudo apt upgrade             # 更新所有已安装软件
 ### 1\. apt / dnf / pacman（首选）
 
 官方源里有的软件，优先用包管理器装，干净、好卸载、自动更新。
-```
-bash
+
+```bash
 # Ubuntu 示例
 sudo apt install git curl wget vim
 ```
@@ -137,8 +134,8 @@ sudo apt install git curl wget vim
 ### 2\. DEB / RPM 包
 
 去官网下载 `.deb`（Ubuntu）或 `.rpm`（Fedora）安装包，本地安装：
-```
-bash
+
+```bash
 # Ubuntu
 sudo apt install ./软件名.deb
 
@@ -149,8 +146,8 @@ sudo dnf install ./软件名.rpm
 ### 3\. Flatpak（推荐用于桌面应用）
 
 跨发行版的通用包格式，软件运行在沙盒里，更安全。[Flathub](https://flathub.org/) 上有大量应用。
-```
-bash
+
+```bash
 # Ubuntu 安装 Flatpak 支持
 sudo apt install flatpak
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -166,13 +163,14 @@ Ubuntu 官方推的格式，但启动慢、体积大，很多软件被悄悄替�
 ### 5\. AppImage（免安装）
 
 下载后直接运行，不需要安装：
-```
-bash
+
+```bash
 chmod +x 软件.AppImage   # 赋予执行权限
 ./软件.AppImage           # 运行
 ```
 
 ### 优先顺序总结
+
 ```
 apt/dnf/pacman  >  Flatpak  >  AppImage  >  Snap
 ```
@@ -184,8 +182,8 @@ apt/dnf/pacman  >  Flatpak  >  AppImage  >  Snap
 不需要背，用到时查，用多了自然记住。
 
 ### 文件操作
-```
-bash
+
+```bash
 ls          # 查看当前目录文件
 ls -la      # 查看详细信息（含隐藏文件）
 cd 目录名   # 进入目录
@@ -201,8 +199,8 @@ mkdir 目录名      # 新建目录
 ```
 
 ### 查看内容
-```
-bash
+
+```bash
 cat 文件名        # 查看文件内容
 less 文件名       # 分页查看（q 退出）
 head -n 10 文件   # 查看前 10 行
@@ -210,24 +208,24 @@ tail -f 文件      # 实时查看文件末尾（常用于看日志）
 ```
 
 ### 权限与管理
-```
-bash
+
+```bash
 sudo 命令          # 以管理员权限运行
 chmod +x 文件名    # 赋予执行权限
 chown 用户 文件    # 修改文件所有者
 ```
 
 ### 进程管理
-```
-bash
+
+```bash
 ps aux             # 查看所有进程
 kill 进程ID        # 终止进程
 htop               # 交互式进程管理（需要先安装：sudo apt install htop）
 ```
 
 ### 其他常用
-```
-bash
+
+```bash
 grep "关键词" 文件   # 在文件中搜索
 find / -name "文件名" # 全盘搜索文件
 df -h               # 查看磁盘使用情况
@@ -255,8 +253,8 @@ Linux 没有回收站，`rm -rf` 删掉的东西找不回来。 **养成习惯�
 ### 坑 4：修改系统文件没有备份
 
 改配置文件前先备份：
-```
-bash
+
+```bash
 cp /etc/配置文件 /etc/配置文件.bak
 ```
 
@@ -274,16 +272,16 @@ cp /etc/配置文件 /etc/配置文件.bak
 如果你用 Linux 做开发，以下是常用环境的安装方式。
 
 ### Git
-```
-bash
+
+```bash
 sudo apt install git
 git config --global user.name "你的名字"
 git config --global user.email "你的邮箱"
 ```
 
 ### Node.js
-```
-bash
+
+```bash
 curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash -
 sudo apt install nodejs
 ```
@@ -291,8 +289,8 @@ sudo apt install nodejs
 ### Python
 
 Ubuntu 自带 Python 3，直接用。pip 安装包：
-```
-bash
+
+```bash
 sudo apt install python3-pip
 pip3 install 包名
 ```
@@ -305,8 +303,8 @@ pip3 install 包名
     
 2.  解压并运行：
     
-```
-bash
+
+```bash
 tar -xzf jetbrains-toolbox-*.tar.gz
 cd jetbrains-toolbox-*/bin/
 ./jetbrains-toolbox
@@ -316,8 +314,8 @@ cd jetbrains-toolbox-*/bin/
     
 
 ### Docker
-```
-bash
+
+```bash
 curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER   # 让当前用户免 sudo 使用 docker
 # 重新登录后生效

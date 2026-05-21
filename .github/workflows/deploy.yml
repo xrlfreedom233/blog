@@ -23,10 +23,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Extract Posts from Halo Data
-        run: node extract-posts.cjs
+        run: npm ci
 
       - name: Build Astro
         run: npm run build

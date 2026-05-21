@@ -13,10 +13,7 @@ tags: []
 
 编辑 `~/.config/niri/config.kdl`，在 `input` 块中修改 `mouse` 配置：
 
-
-
-```
-kdl
+```kdl
 input {
     mouse {
         accel-speed 0.5       // 范围 -1.0 ~ 1.0，0.0 为默认
@@ -30,13 +27,12 @@ input {
 ## 二、开机自动恢复亮度
 
 ### 创建脚本
-```
-bash
+
+```bash
 sudo nano /usr/local/bin/brightness-save-restore.sh
 ```
 
-```
-bash
+```bash
 #!/bin/bash
 BACKLIGHT=/sys/class/backlight/nvidia_0
 SAVE_FILE=/var/lib/brightness
@@ -53,19 +49,17 @@ case "$1" in
 esac
 ```
 
-```
-bash
+```bash
 sudo chmod +x /usr/local/bin/brightness-save-restore.sh
 ```
 
 ### 创建 systemd 服务
-```
-bash
+
+```bash
 sudo nano /etc/systemd/system/brightness.service
 ```
 
-```
-ini
+```ini
 [Unit]
 Description=Save and restore screen brightness
 
@@ -79,8 +73,7 @@ ExecStop=/usr/local/bin/brightness-save-restore.sh save
 WantedBy=multi-user.target
 ```
 
-```
-bash
+```bash
 sudo systemctl enable brightness.service
 sudo systemctl start brightness.service
 ```
@@ -88,8 +81,8 @@ sudo systemctl start brightness.service
 ## 三、GDM 登录界面显示到外接显示器
 
 GDM 默认只在笔记本屏幕显示登录界面，把用户的显示器配置复制给 GDM 即可：
-```
-bash
+
+```bash
 sudo mkdir -p /var/lib/gdm3/.config
 sudo cp ~/.config/monitors.xml /var/lib/gdm3/.config/monitors.xml
 sudo chown -R gdm:gdm /var/lib/gdm3/.config
@@ -101,6 +94,7 @@ sudo systemctl restart gdm3
 ## 四、文件管理器添加自定义书签
 
 编辑 `~/.config/gtk-3.0/bookmarks`，在末尾添加：
+
 ```
 file:/// 根目录
 file:///mnt/C盘 C盘

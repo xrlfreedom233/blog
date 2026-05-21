@@ -9,8 +9,6 @@ tags: []
 
 在windows中，Win+X,然后选择Powershell（管理员），输入下面命令即可修复。
 
-
-
 ```
 Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_DWORD /d 1
 ```

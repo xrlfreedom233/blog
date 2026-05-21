@@ -11,8 +11,6 @@ tags: []
 
 下面是设置swap的步骤，请依次执行
 
-
-
 ```
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
@@ -22,6 +20,7 @@ sudo bash -c 'echo "/swapfile none swap sw 0 0" >> /etc/fstab'
 ```
 
 然后查看：
+
 ```
 free -h
 ```
@@ -29,6 +28,7 @@ free -h
 你会看到多出 2 GB swap，这样系统就不会轻易死机。
 
 大多数人认为到这就结束了，但我这篇文章要讲的痛点就在后面。系统确实已经有swap，但是Linux 有个参数控制何时使用 swap，可以使用下面这行代码查看
+
 ```
 cat /proc/sys/vm/swappiness
 ```
@@ -40,16 +40,19 @@ sudo sysctl vm.swappiness=60这样是临时修改，重启后就会变回原来�
 推荐下面这种永久修改的方法
 
 1.修改/etc/sysctl.conf
+
 ```
 sudo vim /etc/sysctl.conf
 ```
 
 2.添加或修改一行
+
 ```
 vm.swappiness=60
 ```
 
 3.生效
+
 ```
 sudo sysctl -p
 ```
