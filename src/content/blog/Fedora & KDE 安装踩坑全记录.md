@@ -1,10 +1,10 @@
 ---
 title: 'Fedora & KDE 安装踩坑全记录'
-description: '折腾了好几天，终于把 Fedora + KDE 的环境调教得差不多了。把遇到的坑整理出来，希望能帮到同样在踩坑的朋友。 1. 输入法无法输入中文 装完系统后发现输入法完全没有反应，中文上不了屏。这通常是输入法环境变量没有正确配置导致的。以 Fcitx5 为例，需要在 /etc/environment'
+description: '记录 Fedora + KDE 环境配置中遇到的中文输入法、Electron 应用输入、显卡驱动和视频解码等问题。'
 pubDate: '2026-03-19T14:55:06.397669876Z'
 heroImage: ''
 categories: ["note"]
-tags: []
+tags: ["Fedora", "KDE", "Linux", "踩坑记录"]
 ---
 
 折腾了好几天，终于把 Fedora + KDE 的环境调教得差不多了。把遇到的坑整理出来，希望能帮到同样在踩坑的朋友。
@@ -23,7 +23,7 @@ tags: []
 
 解决方法是编辑 QQ 的 `.desktop` 启动文件，在 `Exec=` 行末尾追加以下参数：
 
-```
+```text
 --enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime %U
 ```
 

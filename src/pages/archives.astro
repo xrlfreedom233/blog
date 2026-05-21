@@ -36,7 +36,7 @@ const years = Object.keys(archives).sort((a, b) => parseInt(b) - parseInt(a));
                             <div class="space-y-8">
                                 {archives[parseInt(year)].map(post => (
                                     <div class="flex flex-col md:flex-row md:items-baseline gap-4 group">
-                                        <time class="text-xs font-bold text-text-muted/40 uppercase tracking-widest w-24 shrink-0">
+	                                        <time class="text-base font-bold text-text-muted/40 uppercase tracking-widest w-28 shrink-0">
                                             {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' })}
                                         </time>
                                         <a href={`/blog/${post.slug}`} class="text-xl font-bold text-text-base/80 hover:text-primary transition-all group-hover:translate-x-1 inline-block">

@@ -1,10 +1,10 @@
 ---
 title: 'Linux 双系统自动挂载 Windows NTFS 分区'
-description: '环境：Fedora 41 + Ubuntu 24.04，双 NVMe 硬盘，Windows 与 Linux 共存 前言 装完 Linux 后，每次开机都要手动点击文件管理器挂载 Windows 分区，非常繁琐。本文记录如何通过编辑 /etc/fstab 实现开机自动挂载 NTFS 分区，适用于 Fe'
+description: '记录 Linux 双系统环境下通过 /etc/fstab 自动挂载 Windows NTFS 分区的方法，以及 fstab、udisks2 和快速启动相关注意事项。'
 pubDate: '2026-03-26T06:32:30.935613395Z'
 heroImage: ''
 categories: ["芝士"]
-tags: []
+tags: ["Linux", "Windows", "双系统", "NTFS"]
 ---
 
 环境：Fedora 41 + Ubuntu 24.04，双 NVMe 硬盘，Windows 与 Linux 共存
@@ -21,7 +21,7 @@ tags: []
 
 Linux 桌面环境下，插入设备或检测到未挂载分区时，挂载流程如下：
 
-```
+```text
 开机检测到未挂载分区
         ↓
     udev 发现设备
@@ -33,23 +33,10 @@ Linux 桌面环境下，插入设备或检测到未挂载分区时，挂载流�
 
 **udisks2** 是负责自动挂载可移动设备的守护进程，KDE 的 Dolphin、GNOME 的 Nautilus 等文件管理器本身并不挂载磁盘，只是调用 udisks2 的接口。
 
-路径
-
-时代
-
-说明
-
-`/media/`
-
-旧标准
-
-早期 Linux 使用
-
-`/run/media/`
-
-新标准
-
-systemd 时代，`/run` 是 tmpfs 内存文件系统，适合动态设备
+| 路径 | 时代 | 说明 |
+| --- | --- | --- |
+| `/media/` | 旧标准 | 早期 Linux 使用 |
+| `/run/media/` | 新标准 | systemd 时代，`/run` 是 tmpfs 内存文件系统，适合动态设备 |
 
 ### fstab 和 udisks2 的优先级
 
@@ -64,15 +51,13 @@ systemd 时代，`/run` 是 tmpfs 内存文件系统，适合动态设备
 
 ## 第一步：查看磁盘信息
 
-bash
-
 ```bash
 lsblk -f
 ```
 
 找到需要挂载的 NTFS 分区及其 UUID，例如：
 
-```
+```text
 nvme1n1p3  ntfs  C盘    72FCEB05FCEAC289
 nvme0n1p2  ntfs  新加卷 54126DB3126D9B2E
 ```
@@ -85,15 +70,11 @@ nvme0n1p2  ntfs  新加卷 54126DB3126D9B2E
 
 ### Fedora
 
-bash
-
 ```bash
 sudo dnf install ntfs-3g
 ```
 
 > Fedora 较新版本的内核已内置 `ntfs3` 驱动，挂载成功后可通过以下命令确认使用的驱动：
-> 
-> bash
 > 
 > ```bash
 > rpm -q ntfs-3g
@@ -101,8 +82,6 @@ sudo dnf install ntfs-3g
 > ```
 
 ### Ubuntu
-
-bash
 
 ```bash
 sudo apt install ntfs-3g
@@ -114,8 +93,6 @@ sudo apt install ntfs-3g
 
 ## 第三步：创建挂载点
 
-bash
-
 ```bash
 sudo mkdir -p /mnt/C盘 /mnt/新加卷
 ```
@@ -124,15 +101,13 @@ sudo mkdir -p /mnt/C盘 /mnt/新加卷
 
 ## 第四步：编辑 fstab
 
-bash
-
 ```bash
 sudo nano /etc/fstab
 ```
 
 在文件末尾添加：
 
-```
+```ini
 # Windows C盘
 UUID=72FCEB05FCEAC289  /mnt/C盘    ntfs-3g  defaults,uid=1000,gid=1000,nofail  0  0
 
@@ -142,27 +117,15 @@ UUID=54126DB3126D9B2E  /mnt/新加卷  ntfs-3g  defaults,uid=1000,gid=1000,nofai
 
 **参数说明：**
 
-参数
-
-说明
-
-`uid=1000,gid=1000`
-
-普通用户可读写，无需 sudo
-
-`nofail`
-
-分区挂载失败时不影响系统启动
-
-`0 0`
-
-不备份、不自动 fsck 检查（NTFS 分区不需要）
+| 参数 | 说明 |
+| --- | --- |
+| `uid=1000,gid=1000` | 普通用户可读写，无需 sudo |
+| `nofail` | 分区挂载失败时不影响系统启动 |
+| `0 0` | 不备份、不自动 fsck 检查（NTFS 分区不需要） |
 
 * * *
 
 ## 第五步：测试
-
-bash
 
 ```bash
 # 验证 fstab 语法
@@ -177,14 +140,12 @@ lsblk
 
 正常输出应类似：
 
-```
+```text
 nvme1n1p3  ...  /mnt/C盘
 nvme0n1p2  ...  /mnt/新加卷
 ```
 
 查看分区内容确认可访问：
-
-bash
 
 ```bash
 ls /mnt/C盘
@@ -199,7 +160,7 @@ ls /mnt/新加卷
 
 如果 Windows 开启了**快速启动**（Fast Startup），关机时实际上是休眠而非完全关机，NTFS 分区会处于锁定状态，Linux 下挂载时会报错：
 
-```
+```text
 Mount is denied because the NTFS volume is already exclusively opened.
 ```
 
@@ -210,8 +171,6 @@ Mount is denied because the NTFS volume is already exclusively opened.
 Windows 安装时会在系统盘后面创建一个 **WinRE 恢复分区**（通常约 900MB，无卷标），用于系统重置和自动修复，不要将其加入 fstab。
 
 ### 重启后验证
-
-bash
 
 ```bash
 sudo reboot

@@ -2,16 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
 import linksData from '../data/links.json';
 ---
 
 <BaseLayout title="友情链接 | freedom">
 	<Header />
+	<Hero title="友情链接" subtitle="遇事不决，可问春风；择友而交，亦是幸事。" />
 	
-	<main class="container mx-auto px-4 py-32 max-w-6xl">
-		<h1 class="text-4xl font-bold mb-4 dark:text-white text-center">友情链接</h1>
-		<p class="text-center text-gray-500 mb-16">遇事不决，可问春风；择友而交，亦是幸事。</p>
-
+	<main class="container mx-auto px-4 py-16 max-w-6xl">
 		<div class="space-y-16">
 			{linksData.map(group => (
 				<div>
@@ -29,7 +28,7 @@ import linksData from '../data/links.json';
 								<img src={link.avatar} alt={link.name} class="w-16 h-16 rounded-xl object-cover mr-4" />
 								<div class="flex-1 overflow-hidden">
 									<h3 class="font-bold text-gray-800 dark:text-white group-hover:text-primary transition-colors">{link.name}</h3>
-									<p class="text-sm text-gray-500 dark:text-gray-400 truncate">{link.description}</p>
+									<p class="text-base text-gray-500 dark:text-gray-400 truncate">{link.description}</p>
 								</div>
 							</a>
 						))}

@@ -11,6 +11,8 @@ const staticPages = [
   '/photos/',
 ];
 
+const PAGE_SIZE = 8;
+
 function escapeXml(value) {
   return value
     .replace(/&/g, '&amp;')
@@ -34,12 +36,36 @@ export async function GET(context) {
   const tags = [
     ...new Set(posts.flatMap((post) => post.data.tags ?? [])),
   ];
+  const homePageCount = Math.ceil(posts.length / PAGE_SIZE);
+  const homePagination = Array.from(
+    { length: Math.max(homePageCount - 1, 0) },
+    (_, index) => `/page/${index + 2}/`
+  );
+  const categoryPagination = categories.flatMap((category) => {
+    const count = posts.filter((post) => post.data.categories?.includes(category)).length;
+    const pageCount = Math.ceil(count / PAGE_SIZE);
+    return Array.from(
+      { length: Math.max(pageCount - 1, 0) },
+      (_, index) => `/categories/${encodeURIComponent(category)}/${index + 2}/`
+    );
+  });
+  const tagPagination = tags.flatMap((tag) => {
+    const count = posts.filter((post) => post.data.tags?.includes(tag)).length;
+    const pageCount = Math.ceil(count / PAGE_SIZE);
+    return Array.from(
+      { length: Math.max(pageCount - 1, 0) },
+      (_, index) => `/tags/${encodeURIComponent(tag)}/${index + 2}/`
+    );
+  });
 
   const urls = [
     ...staticPages,
+    ...homePagination,
     ...posts.map((post) => `/blog/${encodeURIComponent(post.slug)}/`),
     ...categories.map((category) => `/categories/${encodeURIComponent(category)}/`),
+    ...categoryPagination,
     ...tags.map((tag) => `/tags/${encodeURIComponent(tag)}/`),
+    ...tagPagination,
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>

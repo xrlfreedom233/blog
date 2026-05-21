@@ -78,6 +78,57 @@ pre {
 
 [x-cloak] { display: none !important; }
 
+/* 首页与文章分页的阅读区背景 */
+.home-surface {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, var(--base-100) 0%, #f6f9fb 18rem, #eef4f7 46rem, #f8fafc 100%);
+}
+
+.home-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(180deg, transparent 0, black 12rem, black 85%, transparent 100%);
+  opacity: 0.45;
+}
+
+.home-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(115deg, rgba(20, 184, 166, 0.08), transparent 34%),
+    linear-gradient(245deg, rgba(245, 158, 11, 0.08), transparent 30%);
+}
+
+.dark .home-surface,
+[data-theme="dark"] .home-surface {
+  background:
+    linear-gradient(180deg, var(--base-100) 0%, #171923 20rem, #111827 100%);
+}
+
+.dark .home-surface::before,
+[data-theme="dark"] .home-surface::before {
+  opacity: 0.16;
+}
+
+.dark .home-surface::after,
+[data-theme="dark"] .home-surface::after {
+  background:
+    linear-gradient(115deg, rgba(20, 184, 166, 0.08), transparent 36%),
+    linear-gradient(245deg, rgba(99, 102, 241, 0.08), transparent 32%);
+}
+
 /* 字体相关 */
 @font-face {
   font-family: blog-font;

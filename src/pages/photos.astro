@@ -2,16 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
 import photos from '../data/photos.json';
 ---
 
 <BaseLayout title="相册 | freedom">
 	<Header />
+	<Hero title="时光相册" subtitle="每一张照片都是一次美好的记忆。" />
 	
-	<main class="container mx-auto px-4 py-32">
-		<h1 class="text-4xl font-bold mb-4 dark:text-white text-center">时光相册</h1>
-		<p class="text-center text-gray-500 mb-16">每一张照片都是一次美好的记忆。</p>
-
+	<main class="container mx-auto px-4 py-16">
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" x-data="{ selectedImg: null }">
 			{photos.map(photo => (
 				<div 
@@ -27,7 +26,7 @@ import photos from '../data/photos.json';
 						<span class="text-white font-bold text-lg mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
 							{photo.title}
 						</span>
-						<span class="px-2 py-1 bg-white/20 backdrop-blur-md rounded text-xs text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+							<span class="px-3 py-1.5 bg-white/20 backdrop-blur-md rounded text-base text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
 							{photo.category}
 						</span>
 					</div>

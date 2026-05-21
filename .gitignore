@@ -17,8 +17,8 @@ pnpm-debug.log*
 .env
 .env.production
 
-# extracted runtime secrets
-halo-extract/workdir/keys/
+# extracted Halo data
+halo-extract/
 
 # macOS-specific files
 .DS_Store

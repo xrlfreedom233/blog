@@ -1,17 +1,17 @@
 ---
 title: '用反射实现一个 Mini Spring MVC'
-description: '一、反射基础方法 1. 获取 Class 对象 Class<?> clazz1 = Class.forName("com.example.User");//灵活 Class<?> clazz2 = User.class;//编译期就确定类型，最快最高效 Class<?> clazz3 = new U'
+description: '通过 Java 反射实现一个 Mini Spring MVC，理解注解扫描、路由注册、Controller 实例化和请求分发的基本流程。'
 pubDate: '2026-04-12T15:17:33.900176647Z'
 heroImage: ''
 categories: ["Java"]
-tags: []
+tags: ["Java", "反射", "Spring MVC", "后端"]
 ---
 
 # 一、反射基础方法
 
 ## 1\. 获取 Class 对象
 
-```
+```java
 Class<?> clazz1 = Class.forName("com.example.User");//灵活
 Class<?> clazz2 = User.class;//编译期就确定类型，最快最高效
 Class<?> clazz3 = new User().getClass();//需要实例化对象
@@ -19,13 +19,13 @@ Class<?> clazz3 = new User().getClass();//需要实例化对象
 
 ## 2\. 创建对象
 
-```
+```java
 Object obj = clazz.getDeclaredConstructor().newInstance();//编译期不知道类型，运行期动态创建
 ```
 
 ## 3\. 获取方法
 
-```
+```java
 Method[] methods = clazz.getMethods();//返回所有公共成员方法数组，包括继承
 Method[] methods = clazz.getDeclaredMethods();//返回所有成员方法数组，不包括继承
 Method method = clazz.getMethod("getUserInfo");//返回单个公共成员方法
@@ -34,7 +34,7 @@ Method method = clazz.getDeclaredMethod("getUserInfo");//返回单个成员方�
 
 ## 4\. 获取注解
 
-```
+```java
 if (method.isAnnotationPresent(RequestMapping.class)) {
     RequestMapping mapping = method.getAnnotation(RequestMapping.class);
     String path = mapping.value();//读取路由路径
@@ -43,13 +43,13 @@ if (method.isAnnotationPresent(RequestMapping.class)) {
 
 ## 5\. 动态执行方法
 
-```
+```java
 method.invoke(obj);//方法是谁、在哪个类、什么时候执行 —— 全部运行时决定 
 ```
 
 # 二、项目结构设计
 
-```
+```text
 com.jincheng.fensheDemo
 ├── annotation
 │   ├── RestController.java
@@ -65,7 +65,7 @@ com.jincheng.fensheDemo
 
 ## 1\. @RestController
 
-```
+```java
 @Target(ElementType.TYPE)//这个注解只能贴在类、接口、枚举上，不能贴在方法或字段上。
 @Retention(RetentionPolicy.RUNTIME)//这个注解在运行时保留，反射可以读到它。
 public @interface RestController {
@@ -76,7 +76,7 @@ public @interface RestController {
 
 ## 2\. @RequestMapping
 
-```
+```java
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
@@ -88,7 +88,7 @@ public @interface RequestMapping {
 
 # 四、编写 Controller
 
-```
+```java
 @RestController
 public class UserController {
 
@@ -108,14 +108,14 @@ public class UserController {
 
 ## 1\. 核心数据结构
 
-```
+```java
 private Map<String, Method> handlerMapping = new HashMap<>();//路由表 路径->对应的方法（method对象）
 private Map<Class<?>, Object> controllerMap = new HashMap<>();简易 IoC 容器 Controller的Class -> 对应的实例对象
 ```
 
 ## 2\. 初始化（扫描 + 注册）
 
-```
+```java
 /**
      * 初始化框架：传入需要被扫描的类
  */
@@ -147,7 +147,7 @@ public void init(Class<?>... classes) throws Exception {
 
 ## 3\. 请求分发（动态调用）
 
-```
+```java
 /**
      * 模拟处理 HTTP 请求
      */
@@ -170,7 +170,7 @@ public Object dispatch(String path) throws Exception {
 
 # 六、启动测试
 
-```
+```java
 public static void main(String[] args) {
     DispatcherServlet dispatcher = new DispatcherServlet();
 
@@ -182,7 +182,7 @@ public static void main(String[] args) {
 }
 ```
 
-```
+```java
 if ("/api/user/info".equals(path)) {
     return new UserController().getUserInfo();
 }//强耦合 ，不可扩展 

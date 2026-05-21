@@ -19,7 +19,7 @@
   background-color: $bg-secondary;
   padding: $spacing-base $spacing-xl;
   text-align: left;
-  font-size: $text-sm;
+  font-size: $text-base;
   font-weight: 600;
   color: $text-primary;
 
@@ -32,7 +32,7 @@
 .article-content td {
   border-top: 1px solid $border-light;
   padding: $spacing-base $spacing-xl;
-  font-size: $text-sm;
+  font-size: $text-base;
   color: $text-secondary;
 
   @include dark-mode {

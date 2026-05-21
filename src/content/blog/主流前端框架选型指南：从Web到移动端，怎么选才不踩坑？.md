@@ -1,10 +1,10 @@
 ---
 title: '主流前端框架选型指南：从Web到移动端，怎么选才不踩坑？'
-description: '作为一个前端开发者，你有没有在项目启动时被这个问题折磨过——"我们到底该用哪个框架？" 本文带你系统梳理当下主流的前端框架，帮你在 React、Vue、Angular、React Native、Flutter、uni-app 之间做出最适合自己项目的选择。 先搞清楚一件事：Web 和 移动端是两条路'
+description: '系统梳理 React、Vue、Angular、React Native、Flutter、uni-app、Taro 等主流框架的特点与选型建议。'
 pubDate: '2026-04-14T06:41:52.611669349Z'
 heroImage: ''
 categories: ["前端"]
-tags: []
+tags: ["前端框架", "React", "Vue", "移动端"]
 ---
 
 > 作为一个前端开发者，你有没有在项目启动时被这个问题折磨过——"我们到底该用哪个框架？" 本文带你系统梳理当下主流的前端框架，帮你在 React、Vue、Angular、React Native、Flutter、uni-app 之间做出最适合自己项目的选择。
@@ -78,61 +78,14 @@ Angular 强制使用 TypeScript，有严格的模块化规范，代码风格在�
 
 ### 三者一眼看清楚
 
-维度
-
-React
-
-Vue
-
-Angular
-
-开发者
-
-Meta
-
-尤雨溪
-
-Google
-
-学习难度
-
-中等
-
-低
-
-高
-
-灵活性
-
-最高
-
-中
-
-低（规范严格）
-
-国内流行度
-
-高
-
-最高
-
-一般
-
-全球流行度
-
-最高
-
-高
-
-中
-
-TypeScript
-
-可选
-
-可选
-
-强制
+| 维度 | React | Vue | Angular |
+| --- | --- | --- | --- |
+| 开发者 | Meta | 尤雨溪 | Google |
+| 学习难度 | 中等 | 低 | 高 |
+| 灵活性 | 最高 | 中 | 低（规范严格） |
+| 国内流行度 | 高 | 最高 | 一般 |
+| 全球流行度 | 最高 | 高 | 中 |
+| TypeScript | 可选 | 可选 | 强制 |
 
 **结论：** 国内项目、小团队首选 Vue；国际化大型项目首选 React；超大型企业团队考虑 Angular。
 
@@ -178,71 +131,19 @@ Taro 是京东出品的框架，定位和 uni-app 类似，但支持 React 和 V
 
 ### 移动端四大框架对比
 
-维度
-
-React Native
-
-Flutter
-
-uni-app
-
-Taro
-
-语言
-
-JavaScript
-
-Dart
-
-Vue
-
-React/Vue
-
-性能
-
-较好
-
-最好
-
-一般
-
-一般
-
-跨平台范围
-
-iOS/Android
-
-iOS/Android/Web/桌面
-
-小程序/App/H5
-
-小程序/App/H5
-
-学习成本
-
-低（有React基础）
-
-高
-
-低（有Vue基础）
-
-低（有React基础）
-
-国内适用性
-
-中
-
-中
-
-最好
-
-好
+| 维度 | React Native | Flutter | uni-app | Taro |
+| --- | --- | --- | --- | --- |
+| 语言 | JavaScript | Dart | Vue | React/Vue |
+| 性能 | 较好 | 最好 | 一般 | 一般 |
+| 跨平台范围 | iOS/Android | iOS/Android/Web/桌面 | 小程序/App/H5 | 小程序/App/H5 |
+| 学习成本 | 低（有 React 基础） | 高 | 低（有 Vue 基础） | 低（有 React 基础） |
+| 国内适用性 | 中 | 中 | 最好 | 好 |
 
 * * *
 
 ## 三、一张图搞定选型
 
-```
+```text
 你的项目需要覆盖微信小程序吗？
     │
     ├── 是

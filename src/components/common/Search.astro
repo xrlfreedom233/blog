@@ -62,7 +62,7 @@ const searchList = posts.map((post) => ({
                 @click="searchOpen = false"
               >
                 <div class="font-bold text-text-base" x-text="result.title"></div>
-                <div class="text-sm text-text-muted mt-1 line-clamp-1" x-text="result.description"></div>
+                <div class="text-base text-text-muted mt-1 line-clamp-1" x-text="result.description"></div>
               </a>
             </template>
           </div>
@@ -96,7 +96,11 @@ const searchList = posts.map((post) => ({
 
     const input = document.getElementById('search-input-field');
     if (input) {
-      input.addEventListener('input', (e) => {
+      if ((input as any).__freedomSearchHandler) {
+        input.removeEventListener('input', (input as any).__freedomSearchHandler);
+      }
+
+      const handleSearchInput = (e) => {
         const query = (e.target as HTMLInputElement).value;
         const results = query.trim() ? fuse.search(query).map(r => r.item).slice(0, 5) : [];
         
@@ -104,7 +108,10 @@ const searchList = posts.map((post) => ({
           const data = (window.Alpine as any).$data(root);
           data.results = results;
         }
-      });
+      };
+
+      (input as any).__freedomSearchHandler = handleSearchInput;
+      input.addEventListener('input', handleSearchInput);
     }
   }
 

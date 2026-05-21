@@ -39,12 +39,12 @@ const stats = readingTime(post.body);
 		<div class="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
 			<div class="flex flex-wrap justify-center gap-2 mb-6">
 				{categories && categories.map(cat => (
-					<a href={`/categories/${cat}`} class="px-3 py-1 bg-primary text-white rounded-full text-[10px] font-black uppercase tracking-wider shadow-lg">
+					<a href={`/categories/${cat}`} class="px-4 py-1.5 bg-primary text-white rounded-full text-base font-black uppercase tracking-wider shadow-lg">
 						{cat}
 					</a>
 				))}
 				{tags && tags.map(tag => (
-					<a href={`/tags/${tag}`} class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black text-white uppercase tracking-wider border border-white/30">
+					<a href={`/tags/${tag}`} class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-base font-black text-white uppercase tracking-wider border border-white/30">
 						#{tag}
 					</a>
 				))}
@@ -52,7 +52,7 @@ const stats = readingTime(post.body);
 			<h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-lg leading-tight">
 				{title}
 			</h1>
-			<div class="flex items-center justify-center text-white/90 text-sm gap-4 drop-shadow-md">
+			<div class="flex items-center justify-center text-white/90 text-base gap-4 drop-shadow-md">
 				<span>📅 {pubDate.toLocaleDateString('zh-CN')}</span>
 				<span class="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
 				<span>⏱️ {Math.ceil(stats.minutes)} 分钟阅读</span>
@@ -71,7 +71,7 @@ const stats = readingTime(post.body);
 			
 			<!-- Article Content (专注阅读宽度) -->
 			<article class="w-full lg:max-w-[800px] animate-fade-in" style="animation-delay: 300ms">
-				<div id="articleContentId" class="prose prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-img:rounded-2xl prose-pre:bg-gray-900 dark:prose-pre:bg-black/50">
+				<div id="articleContentId" class="article-content prose prose-xl dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-img:rounded-2xl prose-pre:bg-gray-900 dark:prose-pre:bg-black/50">
 					<Content />
 				</div>
 			</article>
@@ -104,14 +104,14 @@ const stats = readingTime(post.body);
 					}
 				}" x-init="init()">
 					<div class="bg-base-100 p-6 rounded-2xl shadow-sm border border-border-base/50">
-						<h3 class="text-xs font-black mb-4 dark:text-white uppercase tracking-widest text-primary">
+						<h3 class="text-base font-black mb-4 dark:text-white uppercase tracking-widest text-primary">
 							Catalog
 						</h3>
 						<nav class="space-y-1 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
 							<template x-for="(item, index) in catalog" :key="index">
 								<a 
 									:href="'#' + item.id"
-									class="block py-2 text-xs transition-all duration-200 rounded-lg px-2"
+									class="block py-2 text-base transition-all duration-200 rounded-lg px-2"
 									:class="{
 										'font-bold': item.level === 1,
 										'ml-0': item.level === 1,

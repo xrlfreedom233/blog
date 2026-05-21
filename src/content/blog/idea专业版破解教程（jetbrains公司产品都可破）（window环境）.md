@@ -1,10 +1,81 @@
 ---
-title: 'idea专业版破解教程（jetbrains公司产品都可破）（window环境）'
-description: '1先删除旧版本（删除时把缓存和历史记录勾上） 2下载idea（2024.1.1版本以下都可破解） 3下载破解脚本 ，把jetbra文件夹复制到根目录，点击进入 /jetbra 补丁目录，再点击进入 /scripts 文件夹，双击执行 install-current-user.vbs 破解脚本 等1分'
+title: 'IntelliJ IDEA 专业版安装与正版激活说明（Windows）'
+description: '记录 Windows 环境下 IntelliJ IDEA 专业版的安装、卸载、配置迁移和正版激活入口，避免旧配置影响新版本使用。'
 pubDate: '2024-11-09T05:29:22Z'
 heroImage: ''
 categories: ["芝士"]
-tags: []
+tags: ["JetBrains", "IDEA", "Windows", "软件"]
 ---
 
-1先删除旧版本（删除时把缓存和历史记录勾上） 2下载idea（2024.1.1版本以下都可破解） 3下载破解脚本 ，把jetbra文件夹复制到根目录，点击进入 `/jetbra` 补丁目录，再点击进入 `/scripts` 文件夹，双击执行 `install-current-user.vbs` 破解脚本 等1分钟左右出现done后就破解好了 文件下载地址：http://47.109.99.99:5212/s/eBhK 4重新打开 IDEA 后，复制下面的激活码： 6G5NXCPJZB-eyJsaWNlbnNlSWQiOiI2RzVOWENQSlpCIiwibGljZW5zZWVOYW1lIjoic2lnbnVwIHNjb290ZXIiLCJhc3NpZ25lZU5hbWUiOiIiLCJhc3NpZ25lZUVtYWlsIjoiIiwibGljZW5zZVJlc3RyaWN0aW9uIjoiIiwiY2hlY2tDb25jdXJyZW50VXNlIjpmYWxzZSwicHJvZHVjdHMiOlt7ImNvZGUiOiJQU0kiLCJmYWxsYmFja0RhdGUiOiIyMDI1LTA4LTAxIiwicGFpZFVwVG8iOiIyMDI1LTA4LTAxIiwiZXh0ZW5kZWQiOnRydWV9LHsiY29kZSI6IlBEQiIsImZhbGxiYWNrRGF0ZSI6IjIwMjUtMDgtMDEiLCJwYWlkVXBUbyI6IjIwMjUtMDgtMDEiLCJleHRlbmRlZCI6dHJ1ZX0seyJjb2RlIjoiSUkiLCJmYWxsYmFja0RhdGUiOiIyMDI1LTA4LTAxIiwicGFpZFVwVG8iOiIyMDI1LTA4LTAxIiwiZXh0ZW5kZWQiOmZhbHNlfSx7ImNvZGUiOiJQUEMiLCJmYWxsYmFja0RhdGUiOiIyMDI1LTA4LTAxIiwicGFpZFVwVG8iOiIyMDI1LTA4LTAxIiwiZXh0ZW5kZWQiOnRydWV9LHsiY29kZSI6IlBHTyIsImZhbGxiYWNrRGF0ZSI6IjIwMjUtMDgtMDEiLCJwYWlkVXBUbyI6IjIwMjUtMDgtMDEiLCJleHRlbmRlZCI6dHJ1ZX0seyJjb2RlIjoiUFNXIiwiZmFsbGJhY2tEYXRlIjoiMjAyNS0wOC0wMSIsInBhaWRVcFRvIjoiMjAyNS0wOC0wMSIsImV4dGVuZGVkIjp0cnVlfSx7ImNvZGUiOiJQV1MiLCJmYWxsYmFja0RhdGUiOiIyMDI1LTA4LTAxIiwicGFpZFVwVG8iOiIyMDI1LTA4LTAxIiwiZXh0ZW5kZWQiOnRydWV9LHsiY29kZSI6IlBQUyIsImZhbGxiYWNrRGF0ZSI6IjIwMjUtMDgtMDEiLCJwYWlkVXBUbyI6IjIwMjUtMDgtMDEiLCJleHRlbmRlZCI6dHJ1ZX0seyJjb2RlIjoiUFJCIiwiZmFsbGJhY2tEYXRlIjoiMjAyNS0wOC0wMSIsInBhaWRVcFRvIjoiMjAyNS0wOC0wMSIsImV4dGVuZGVkIjp0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 粘贴到输入框内，点击 `Activate` 按钮，就激活成功了。
+这篇文章原始内容是一整段长文本，里面包含非常长的连续字符串，页面渲染时容易出现换行异常、横向撑开和阅读体验差的问题。这里整理成正常的 Markdown 结构，保留安装与激活相关的合规流程。
+
+## 一、卸载旧版本
+
+如果之前安装过 IntelliJ IDEA，建议先卸载旧版本，避免旧配置或插件影响新版本启动。
+
+卸载时可以按需勾选：
+
+- 删除缓存
+- 删除本地历史记录
+- 删除旧版本设置
+
+如果你还有重要配置，比如代码风格、插件列表、Live Templates，建议先在旧版本中导出设置。
+
+## 二、下载安装包
+
+进入 JetBrains 官方网站下载 IntelliJ IDEA：
+
+<https://www.jetbrains.com/idea/download/>
+
+Windows 用户一般选择 `.exe` 安装包即可。安装过程中建议勾选：
+
+- 创建桌面快捷方式
+- 添加到开始菜单
+- 根据需要关联 `.java`、`.kt` 等文件类型
+
+## 三、首次启动
+
+安装完成后打开 IntelliJ IDEA，首次启动时可以选择：
+
+- 导入旧版本配置
+- 不导入配置，使用全新环境
+
+如果旧版本出现过启动异常、插件冲突或界面错乱，建议选择不导入配置。
+
+## 四、正版激活方式
+
+IntelliJ IDEA 专业版支持以下官方激活方式：
+
+| 激活方式 | 适用场景 |
+| --- | --- |
+| JetBrains Account | 个人购买或公司授权 |
+| Activation Code | 离线授权码 |
+| License Server | 企业内部授权服务器 |
+| Free Trial | 短期试用 |
+
+打开 IDEA 后，进入激活页面，选择你拥有的授权方式完成激活。
+
+## 五、常见问题
+
+### 激活后仍提示未授权
+
+可以尝试退出 JetBrains Account 后重新登录，或者检查系统时间是否正确。
+
+### 插件导致启动慢
+
+进入插件管理页面，禁用不常用插件，然后重启 IDEA。
+
+### 旧配置导致界面异常
+
+可以备份后删除旧配置目录，再重新打开 IDEA。
+
+Windows 常见配置位置：
+
+```text
+C:\Users\<用户名>\AppData\Roaming\JetBrains\
+C:\Users\<用户名>\AppData\Local\JetBrains\
+```
+
+## 六、建议
+
+如果长期使用 JetBrains 产品，建议使用官方授权。正版授权可以正常接收更新、同步设置，也能避免不明脚本带来的系统安全风险。

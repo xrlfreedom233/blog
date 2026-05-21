@@ -1,0 +1,56 @@
+---
+interface Props {
+	currentPage: number;
+	totalPages: number;
+	getPageHref: (page: number) => string;
+}
+
+const { currentPage, totalPages, getPageHref } = Astro.props;
+const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+---
+
+{totalPages > 1 && (
+	<nav class="mt-12 w-full" aria-label="分页">
+		<div class="mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-2">
+			{currentPage > 1 ? (
+				<a
+					href={getPageHref(currentPage - 1)}
+					class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-100 text-text-base hover:text-primary hover:border-primary transition-colors"
+				>
+					上一页
+				</a>
+			) : (
+				<span class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-200/60 text-text-muted/40 cursor-not-allowed">
+					上一页
+				</span>
+			)}
+
+			{pages.map((page) => (
+				<a
+					href={getPageHref(page)}
+					aria-current={page === currentPage ? 'page' : undefined}
+					class={`min-w-10 px-3 py-2 text-center text-base font-bold rounded-lg border transition-colors ${
+						page === currentPage
+							? 'bg-primary text-white border-primary'
+							: 'border-border-base bg-base-100 text-text-base hover:text-primary hover:border-primary'
+					}`}
+				>
+					{page}
+				</a>
+			))}
+
+			{currentPage < totalPages ? (
+				<a
+					href={getPageHref(currentPage + 1)}
+					class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-100 text-text-base hover:text-primary hover:border-primary transition-colors"
+				>
+					下一页
+				</a>
+			) : (
+				<span class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-200/60 text-text-muted/40 cursor-not-allowed">
+					下一页
+				</span>
+			)}
+		</div>
+	</nav>
+)}

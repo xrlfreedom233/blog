@@ -1,10 +1,10 @@
 ---
 title: 'Linux 折腾笔记：niri + Ubuntu 日常配置备忘'
-description: '记录一些在 niri 窗口管理器和 Ubuntu 下折腾的经验，供自己以后查阅。 一、niri 鼠标灵敏度调节 编辑 ~/.config/niri/config.kdl，在 input 块中修改 mouse 配置： input {     mouse {         accel-speed 0.'
+description: '记录 niri 窗口管理器和 Ubuntu 下的日常配置，包括鼠标灵敏度、应用启动、显示器布局和文件管理器书签。'
 pubDate: '2026-03-28T18:43:49.875044122Z'
 heroImage: ''
 categories: ["芝士"]
-tags: []
+tags: ["Linux", "niri", "Ubuntu", "桌面环境"]
 ---
 
 记录一些在 niri 窗口管理器和 Ubuntu 下折腾的经验，供自己以后查阅。
@@ -13,7 +13,7 @@ tags: []
 
 编辑 `~/.config/niri/config.kdl`，在 `input` 块中修改 `mouse` 配置：
 
-```kdl
+```text
 input {
     mouse {
         accel-speed 0.5       // 范围 -1.0 ~ 1.0，0.0 为默认
@@ -95,7 +95,7 @@ sudo systemctl restart gdm3
 
 编辑 `~/.config/gtk-3.0/bookmarks`，在末尾添加：
 
-```
+```text
 file:/// 根目录
 file:///mnt/C盘 C盘
 file:///mnt/新加卷 新加卷

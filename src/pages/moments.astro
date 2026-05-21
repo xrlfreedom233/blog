@@ -2,16 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Hero from '../components/Hero.astro';
 import moments from '../data/moments.json';
 ---
 
 <BaseLayout title="瞬间 | freedom">
 	<Header />
+	<Hero title="瞬间" subtitle="记录生活中的细碎美好。" />
 	
-	<main class="container mx-auto px-4 py-32 max-w-2xl">
-		<h1 class="text-4xl font-bold mb-4 dark:text-white text-center">瞬间</h1>
-		<p class="text-center text-gray-500 mb-16">记录生活中的细碎美好。</p>
-
+	<main class="container mx-auto px-4 py-16 max-w-2xl">
 		<div class="space-y-12 relative">
 			<!-- Vertical Line -->
 			<div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 via-secondary/50 to-accent/50 md:-translate-x-1/2"></div>
@@ -23,7 +22,7 @@ import moments from '../data/moments.json';
 					
 					<div class={`w-full md:w-[45%] pl-8 md:pl-0 ${index % 2 === 0 ? 'md:pl-8' : 'md:pr-8'}`}>
 						<div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow">
-							<time class="text-xs text-gray-400 mb-2 block">{moment.date}</time>
+								<time class="text-base text-gray-400 mb-2 block">{moment.date}</time>
 							<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
 								{moment.content}
 							</p>

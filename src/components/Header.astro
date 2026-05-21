@@ -23,20 +23,31 @@ const site = {
 	title: "freedom",
 	logo: "https://tuchuang.xrlfreedom.top/2026/04/19d23f3d87c7ac449c8abbe36a4edbf0.webp"
 };
+
+const solidHeaderPaths = [];
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const forceSolidHeader = solidHeaderPaths.includes(currentPath);
 ---
 
 <header
-  x-data="{ isVisible: true, lastScrollY: 0, isScrolled: false, mobileMenuOpen: false }"
+  x-data={`{ isVisible: true, lastScrollY: 0, isScrolled: false, mobileMenuOpen: false, forceSolidHeader: ${forceSolidHeader} }`}
   x-init="
-    window.addEventListener('scroll', () => {
+    if (window.__freedomHeaderScrollHandler) {
+      window.removeEventListener('scroll', window.__freedomHeaderScrollHandler);
+    }
+
+    window.__freedomHeaderScrollHandler = () => {
       const currentScrollY = window.scrollY;
       isVisible = currentScrollY === 0 || currentScrollY < lastScrollY;
       lastScrollY = currentScrollY;
       isScrolled = currentScrollY > 50;
-    });
+    };
+
+    window.addEventListener('scroll', window.__freedomHeaderScrollHandler);
+    window.__freedomHeaderScrollHandler();
   "
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-  :style="isScrolled || mobileMenuOpen ? 'background-color: var(--base-100); box-shadow: var(--shadow-lg);' : 'background-color: transparent;'"
+  :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'background-color: var(--base-100); box-shadow: var(--shadow-lg);' : 'background-color: transparent;'"
 >
   <nav class="container mx-auto px-6">
     <div class="flex h-16 items-center justify-between">
@@ -47,10 +58,10 @@ const site = {
             alt="Logo"
             class="h-9 w-9 rounded-full transition-all duration-500 group-hover:rotate-[360deg] shadow-md ring-2 ring-white/20 object-cover"
           />
-          <span 
-            class="text-xl font-bold tracking-tight transition-colors duration-300"
-            :style="isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));'"
-          >
+	          <span 
+	            class="text-xl font-bold tracking-tight transition-colors duration-300"
+	            :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));'"
+	          >
             {site.title}
           </span>
         </a>
@@ -60,10 +71,10 @@ const site = {
           {menuItems.map(item => (
             <div class="relative group">
               <a
-                href={item.href}
-                class="px-4 py-2 text-sm font-bold transition-all duration-300 relative inline-block"
-                :style="isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: rgba(255,255,255,0.9);'"
-              >
+	                href={item.href}
+	                class="px-4 py-2 text-base font-bold transition-all duration-300 relative inline-block"
+	                :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: rgba(255,255,255,0.9);'"
+	              >
                 {item.name}
                 <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </a>
@@ -72,21 +83,21 @@ const site = {
         </div>
       </div>
 
-      <div class="flex items-center space-x-4">
-        <div class="transition-colors duration-300" :style="isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'">
-          <Search />
-        </div>
-        
-        <div class="theme-switch-wrapper" :class="isScrolled || mobileMenuOpen ? 'text-text-base' : 'text-white'">
-            <ThemeSwitch />
-        </div>
+	      <div class="flex items-center space-x-4">
+	        <div class="transition-colors duration-300" :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'">
+	          <Search />
+	        </div>
+	        
+	        <div class="theme-switch-wrapper" :class="forceSolidHeader || isScrolled || mobileMenuOpen ? 'text-text-base' : 'text-white'">
+	            <ThemeSwitch />
+	        </div>
         
         <!-- Mobile Menu Button -->
         <button
-          @click="mobileMenuOpen = !mobileMenuOpen"
-          class="md:hidden p-2 transition-colors relative z-[60]"
-          :style="isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'"
-        >
+	          @click="mobileMenuOpen = !mobileMenuOpen"
+	          class="md:hidden p-2 transition-colors relative z-[60]"
+	          :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'"
+	        >
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             <path x-show="mobileMenuOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

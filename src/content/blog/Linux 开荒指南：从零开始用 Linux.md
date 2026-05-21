@@ -1,10 +1,10 @@
 ---
 title: 'Linux 开荒指南：从零开始用 Linux'
-description: '本文面向完全没有 Linux 经验的新手，帮你从选发行版到装软件，少走弯路。 一、先选发行版 Linux 不是一个系统，而是一大家子系统。对于新手，只需要关注以下几个： 发行版<'
+description: '本文面向完全没有 Linux 经验的新手，帮你从选发行版、安装系统、认识包管理器到日常使用，少走弯路。'
 pubDate: '2026-03-26T02:06:10.940445770Z'
 heroImage: ''
-categories: []
-tags: []
+categories: ["芝士"]
+tags: ["Linux", "新手入门", "系统安装", "软件管理"]
 ---
 
 > 本文面向完全没有 Linux 经验的新手，帮你从选发行版到装软件，少走弯路。
@@ -15,35 +15,12 @@ tags: []
 
 Linux 不是一个系统，而是一大家子系统。对于新手，只需要关注以下几个：
 
-发行版
-
-特点
-
-推荐人群
-
-**Ubuntu**
-
-社区最大、文档最全、最好搜到答案
-
-所有新手首选
-
-**Fedora**
-
-软件版本新、技术前沿、稳定性好
-
-想用新技术的开发者
-
-**Linux Mint**
-
-基于 Ubuntu、界面最像 Windows
-
-Windows 迁移用户
-
-**EndeavourOS**
-
-基于 Arch、软件最全、滚动更新
-
-有一点基础想进阶的用户
+| 发行版 | 特点 | 推荐人群 |
+| --- | --- | --- |
+| **Ubuntu** | 社区最大、文档最全、最好搜到答案 | 所有新手首选 |
+| **Fedora** | 软件版本新、技术前沿、稳定性好 | 想用新技术的开发者 |
+| **Linux Mint** | 基于 Ubuntu、界面最像 Windows | Windows 迁移用户 |
+| **EndeavourOS** | 基于 Arch、软件最全、滚动更新 | 有一点基础想进阶的用户 |
 
 **结论：第一次用 Linux，装 Ubuntu，没有之一。**
 
@@ -85,29 +62,11 @@ Windows 迁移用户
 
 不同发行版用不同的包管理器：
 
-发行版
-
-包管理器
-
-常用命令
-
-Ubuntu / Mint
-
-apt
-
-`sudo apt install 软件名`
-
-Fedora
-
-dnf
-
-`sudo dnf install 软件名`
-
-Arch / EndeavourOS
-
-pacman
-
-`sudo pacman -S 软件名`
+| 发行版 | 包管理器 | 常用命令 |
+| --- | --- | --- |
+| Ubuntu / Mint | apt | `sudo apt install 软件名` |
+| Fedora | dnf | `sudo dnf install 软件名` |
+| Arch / EndeavourOS | pacman | `sudo pacman -S 软件名` |
 
 以 Ubuntu 为例，常用操作：
 
@@ -171,7 +130,7 @@ chmod +x 软件.AppImage   # 赋予执行权限
 
 ### 优先顺序总结
 
-```
+```text
 apt/dnf/pacman  >  Flatpak  >  AppImage  >  Snap
 ```
 
@@ -325,53 +284,15 @@ sudo usermod -aG docker $USER   # 让当前用户免 sudo 使用 docker
 
 ## 八、推荐工具
 
-工具
-
-用途
-
-安装
-
-htop
-
-进程/资源监控
-
-`sudo apt install htop`
-
-vim / neovim
-
-终端编辑器
-
-`sudo apt install neovim`
-
-zsh + oh-my-zsh
-
-更好用的 Shell
-
-见官网
-
-tmux
-
-终端多窗口
-
-`sudo apt install tmux`
-
-bat
-
-更好的 cat
-
-`sudo apt install bat`
-
-fzf
-
-模糊搜索
-
-`sudo apt install fzf`
-
-Flatseal
-
-管理 Flatpak 应用权限
-
-Flathub 安装
+| 工具 | 用途 | 安装 |
+| --- | --- | --- |
+| htop | 进程/资源监控 | `sudo apt install htop` |
+| vim / neovim | 终端编辑器 | `sudo apt install neovim` |
+| zsh + oh-my-zsh | 更好用的 Shell | 见官网 |
+| tmux | 终端多窗口 | `sudo apt install tmux` |
+| bat | 更好的 cat | `sudo apt install bat` |
+| fzf | 模糊搜索 | `sudo apt install fzf` |
+| Flatseal | 管理 Flatpak 应用权限 | Flathub 安装 |
 
 * * *
 
