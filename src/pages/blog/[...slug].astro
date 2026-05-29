@@ -17,8 +17,13 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await post.render();
-const { title, description, pubDate, heroImage, tags, categories } = post.data;
+const { title, description, pubDate, updatedDate, heroImage, tags, categories } = post.data;
 const stats = readingTime(post.body);
+const allPosts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const currentPostIndex = allPosts.findIndex((item) => item.slug === post.slug);
+const newerPost = currentPostIndex > 0 ? allPosts[currentPostIndex - 1] : undefined;
+const olderPost = currentPostIndex >= 0 && currentPostIndex < allPosts.length - 1 ? allPosts[currentPostIndex + 1] : undefined;
+const showUpdatedDate = updatedDate && updatedDate.valueOf() !== pubDate.valueOf();
 ---
 
 <BaseLayout title={`${title} | freedom`} description={description}>
@@ -54,6 +59,12 @@ const stats = readingTime(post.body);
 			</h1>
 			<div class="flex items-center justify-center text-white/90 text-base gap-4 drop-shadow-md">
 				<span>📅 {pubDate.toLocaleDateString('zh-CN')}</span>
+				{showUpdatedDate && (
+					<>
+						<span class="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
+						<span>更新于 {updatedDate.toLocaleDateString('zh-CN')}</span>
+					</>
+				)}
 				<span class="w-1.5 h-1.5 bg-white/50 rounded-full"></span>
 				<span>⏱️ {Math.ceil(stats.minutes)} 分钟阅读</span>
 			</div>
@@ -74,6 +85,36 @@ const stats = readingTime(post.body);
 				<div id="articleContentId" class="article-content prose prose-xl dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-img:rounded-2xl prose-pre:bg-gray-900 dark:prose-pre:bg-black/50">
 					<Content />
 				</div>
+
+				<nav class="mt-14 grid gap-4 border-t border-border-base/60 pt-8 md:grid-cols-2">
+					{olderPost ? (
+						<a href={`/blog/${olderPost.slug}/`} class="group rounded-xl border border-border-base bg-base-100 p-5 transition-all hover:-translate-y-1 hover:border-primary hover:shadow-md no-underline">
+							<span class="text-sm font-bold text-text-muted">上一篇</span>
+							<h2 class="mt-2 line-clamp-2 text-xl font-black text-text-base transition-colors group-hover:text-primary">
+								{olderPost.data.title}
+							</h2>
+						</a>
+					) : (
+						<div class="rounded-xl border border-border-base/60 bg-base-200/40 p-5 text-text-muted">
+							<span class="text-sm font-bold">上一篇</span>
+							<p class="mt-2">已经是第一篇文章了</p>
+						</div>
+					)}
+
+					{newerPost ? (
+						<a href={`/blog/${newerPost.slug}/`} class="group rounded-xl border border-border-base bg-base-100 p-5 text-right transition-all hover:-translate-y-1 hover:border-primary hover:shadow-md no-underline">
+							<span class="text-sm font-bold text-text-muted">下一篇</span>
+							<h2 class="mt-2 line-clamp-2 text-xl font-black text-text-base transition-colors group-hover:text-primary">
+								{newerPost.data.title}
+							</h2>
+						</a>
+					) : (
+						<div class="rounded-xl border border-border-base/60 bg-base-200/40 p-5 text-right text-text-muted">
+							<span class="text-sm font-bold">下一篇</span>
+							<p class="mt-2">已经是最新文章了</p>
+						</div>
+					)}
+				</nav>
 			</article>
 
 			<!-- TOC Sidebar (右侧悬浮) -->

@@ -3,9 +3,10 @@ const currentYear = new Date().getFullYear();
 const footerConfig = {
 	animalImage: "/images/animals.webp",
 	slogan: "愿你眼中总有光，活成自己喜欢的模样",
-	icp: "京ICP备XXXXXXXX号",
+	icp: "蜀ICP备2024106195号-1",
 	icpLink: "https://beian.miit.gov.cn/",
-	author: "freedom"
+	author: "freedom",
+	startTime: "2024-06-19T00:00:00+08:00"
 };
 ---
 
@@ -35,16 +36,60 @@ const footerConfig = {
 					<a href={footerConfig.icpLink} target="_blank" class="hover:text-primary transition-colors">
 						{footerConfig.icp}
 					</a>
+					<span>
+						本站已运行
+						<span
+							id="site-runtime"
+							class="font-bold text-primary"
+							data-start-time={footerConfig.startTime}
+						>
+							计算中...
+						</span>
+					</span>
 					<span>&copy; {currentYear} {footerConfig.author}</span>
 					<div class="flex items-center space-x-1">
 						<span>Powered by</span>
 						<a href="https://astro.build" target="_blank" class="font-bold hover:text-primary transition-colors">Astro</a>
 					</div>
+					<a href="/rss.xml" class="font-bold hover:text-primary transition-colors">RSS</a>
+					<a href="/sitemap-index.xml" class="font-bold hover:text-primary transition-colors">Sitemap</a>
 				</div>
 			</div>
 		</div>
 	</footer>
 </div>
+
+<script>
+	function setupSiteRuntime() {
+		const runtime = document.getElementById('site-runtime');
+		if (!runtime) return;
+
+		const startTime = new Date(runtime.dataset.startTime || '').getTime();
+		if (Number.isNaN(startTime)) {
+			runtime.textContent = '时间配置错误';
+			return;
+		}
+
+		if ((window as any).__freedomRuntimeTimer) {
+			window.clearInterval((window as any).__freedomRuntimeTimer);
+		}
+
+		const updateRuntime = () => {
+			const diffSeconds = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+			const days = Math.floor(diffSeconds / 86400);
+			const hours = Math.floor((diffSeconds % 86400) / 3600);
+			const minutes = Math.floor((diffSeconds % 3600) / 60);
+			const seconds = diffSeconds % 60;
+
+			runtime.textContent = `${days} 天 ${hours} 时 ${minutes} 分 ${seconds} 秒`;
+		};
+
+		updateRuntime();
+		(window as any).__freedomRuntimeTimer = window.setInterval(updateRuntime, 1000);
+	}
+
+	document.addEventListener('astro:page-load', setupSiteRuntime);
+</script>
 
 <style>
 	.animate-fade-in {

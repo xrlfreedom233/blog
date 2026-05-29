@@ -1,29 +1,18 @@
 [
   {
-    "group": "技术大佬",
+    "group": "友链",
     "links": [
       {
-        "name": "Astro",
-        "url": "https://astro.build",
-        "avatar": "https://astro.build/favicon.svg",
-        "description": "The web framework for content-driven websites."
+        "name": "Aloys",
+        "url": "https://blog.aloys233.top/",
+        "avatar": "https://cn.cravatar.com/avatar/07eee423b13b6f4ff12d1eca3bfc8ef2?s=512",
+        "description": "blog.aloys233.top"
       },
       {
-        "name": "Tailwind CSS",
-        "url": "https://tailwindcss.com",
-        "avatar": "https://tailwindcss.com/favicons/favicon-32x32.png?v=3",
-        "description": "A utility-first CSS framework."
-      }
-    ]
-  },
-  {
-    "group": "生活分享",
-    "links": [
-      {
-        "name": "Ideaflow",
-        "url": "https://github.com/Idea-flow",
-        "avatar": "/images/favicon.ico",
-        "description": "本项目作者的 GitHub 组织"
+        "name": "Furina",
+        "url": "https://blog.fur1na.top/",
+        "avatar": "https://blog.fur1na.top/_astro/tx.CnyKnseF_1o7waV.webp",
+        "description": "blog.fur1na.top"
       }
     ]
   }

@@ -7,8 +7,6 @@ const staticPages = [
   '/categories/',
   '/tags/',
   '/links/',
-  '/moments/',
-  '/photos/',
 ];
 
 const PAGE_SIZE = 8;

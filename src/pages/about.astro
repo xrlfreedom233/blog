@@ -5,11 +5,14 @@ import Footer from '../components/Footer.astro';
 import Hero from '../components/Hero.astro';
 
 const skills = [
-  { name: 'Vue / React', level: '90%' },
-  { name: 'TypeScript', level: '85%' },
-  { name: 'Astro', level: '95%' },
-  { name: 'Tailwind CSS', level: '90%' },
-  { name: 'Linux / Docker', level: '80%' },
+  'Java / JVM',
+  'Spring Boot / Spring Cloud',
+  'MySQL / Redis',
+  'RabbitMQ / 高并发优化',
+  'Linux / Docker / Nginx',
+  'JWT / Maven / Knife4j',
+  '设计模式 / 并发编程',
+  'AI Agent 辅助开发',
 ];
 ---
 
@@ -27,11 +30,40 @@ const skills = [
           alt="Avatar"
         />
         <h2 class="text-2xl font-bold dark:text-white mb-2">freedom</h2>
-	        <p class="text-gray-500 text-base mb-6">全栈开发工程师 / 终身学习者</p>
+	        <p class="text-gray-500 text-base mb-6">Java 后端开发 / Linux 折腾者</p>
         
-        <div class="flex justify-center gap-4">
-          <a href="#" class="text-gray-400 hover:text-primary transition-colors">GitHub</a>
-          <a href="#" class="text-gray-400 hover:text-primary transition-colors">知乎</a>
+        <div class="space-y-3">
+          <a
+            href="https://github.com/xrlfreedom233"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+          >
+            <span class="flex items-center gap-3">
+              <span class="icon-[tabler--brand-github] text-2xl text-gray-700 transition-colors group-hover:text-primary dark:text-gray-200"></span>
+              <span>
+                <span class="block text-base font-bold text-gray-800 transition-colors group-hover:text-primary dark:text-white">GitHub</span>
+                <span class="block text-sm text-gray-500 dark:text-gray-400">查看代码主页</span>
+              </span>
+            </span>
+            <span class="icon-[tabler--external-link] text-xl text-gray-400 transition-colors group-hover:text-primary"></span>
+          </a>
+
+          <a
+            href="https://space.bilibili.com/631150052"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+          >
+            <span class="flex items-center gap-3">
+              <span class="icon-[tabler--brand-bilibili] text-2xl text-pink-500 transition-colors group-hover:text-primary"></span>
+              <span>
+                <span class="block text-base font-bold text-gray-800 transition-colors group-hover:text-primary dark:text-white">Bilibili</span>
+                <span class="block text-sm text-gray-500 dark:text-gray-400">查看视频主页</span>
+              </span>
+            </span>
+            <span class="icon-[tabler--external-link] text-xl text-gray-400 transition-colors group-hover:text-primary"></span>
+          </a>
         </div>
       </div>
 
@@ -43,9 +75,9 @@ const skills = [
             自我介绍
           </h3>
           <p class="text-text-muted leading-relaxed">
-            你好！我是 freedom。一名热爱折腾、追求极致体验的前端开发者。
-            我喜欢用代码构建美观且实用的工具，通过文字记录技术成长与生活感悟。
-            这个博客是我在数字世界的“自留地”，欢迎你常来逛逛。
+            你好！我是 freedom，主要方向是 Java 后端开发。平时关注 Spring 生态、MySQL、Redis、RabbitMQ
+            和高并发场景下的系统优化，也喜欢折腾 Linux、Docker、Nginx、NAS 与服务部署。
+            我会把项目开发、问题排查、系统配置和学习过程记录在这里，让这个博客成为自己的技术笔记和长期复盘空间。
           </p>
         </section>
 
@@ -54,17 +86,11 @@ const skills = [
             <span class="w-1 h-6 bg-primary rounded-full"></span>
             技能清单
           </h3>
-          <div class="space-y-6">
+          <div class="flex flex-wrap gap-3">
             {skills.map(skill => (
-              <div>
-	                <div class="flex justify-between text-base mb-2">
-                  <span class="font-medium dark:text-gray-300">{skill.name}</span>
-                  <span class="text-primary">{skill.level}</span>
-                </div>
-                <div class="w-full h-2 bg-base-200 rounded-full overflow-hidden">
-                  <div class="h-full bg-primary transition-all duration-1000" style={`width: ${skill.level}`}></div>
-                </div>
-              </div>
+              <span class="inline-flex rounded-lg border border-gray-200 bg-white px-4 py-2 text-base font-medium text-gray-600 shadow-sm transition-colors hover:border-primary hover:text-primary dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                {skill}
+              </span>
             ))}
           </div>
         </section>
