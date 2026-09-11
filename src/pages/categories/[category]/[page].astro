@@ -73,7 +73,7 @@ const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
     {categories.map(([name, count]) => (
       <li>
         <a href={`/categories/${name}/`} class={`group flex items-center justify-between gap-3 rounded-xl px-3 py-2 no-underline transition-colors ${name === category ? 'bg-base-200' : 'text-text-muted hover:bg-base-200'}`}>
-          <span class={`flex min-w-0 items-center gap-2.5 text-base font-semibold transition-colors ${name === category ? 'text-primary' : 'group-hover:text-primary'}`}>
+          <span class={`flex min-w-0 items-center gap-2.5 text-base font-semibold transition-colors ${name === category ? 'text-primary-ink' : 'group-hover:text-primary'}`}>
             <span class={`h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary transition-transform ${name === category ? 'scale-125' : 'group-hover:scale-125'}`}></span>
             <span class="truncate">{name}</span>
           </span>

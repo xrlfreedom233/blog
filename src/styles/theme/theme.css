@@ -64,6 +64,10 @@
   --shadow-sm: rgba(147, 147, 250, 0.05);
   --shadow-md: rgba(147, 147, 250, 0.1);
   --shadow-lg: rgba(147, 147, 250, 0.15);
+
+  /* 浅色背景上“当文字/承载白字”时使用的主色，保证对比度 ≥ 4.5:1。
+     纯装饰/淡色填充仍用 --primary，观感不变。 */
+  --primary-ink: #4f46e5;
 }
 
 /* 暗色主题 */
@@ -119,6 +123,9 @@
   --shadow-sm: rgba(0, 0, 0, 0.2);
   --shadow-md: rgba(0, 0, 0, 0.4);
   --shadow-lg: rgba(0, 0, 0, 0.6);
+
+  /* 深色背景下 #818cf8 本身已达 ~6:1，文字色沿用主色 */
+  --primary-ink: #818cf8;
 }
 
 /* 春天主题 */
@@ -133,6 +140,8 @@
   --shadow-sm: rgba(136, 192, 168, 0.05);
   --shadow-md: rgba(136, 192, 168, 0.1);
   --shadow-lg: rgba(136, 192, 168, 0.15);
+
+  --primary-ink: #276b54;
 }
 
 /* 夏季主题 */
@@ -188,6 +197,8 @@
   --shadow-sm: rgba(0, 180, 216, 0.05);
   --shadow-md: rgba(0, 180, 216, 0.1);
   --shadow-lg: rgba(0, 180, 216, 0.15);
+
+  --primary-ink: #0e7490;
 }
 
 /* 秋季主题 */
@@ -243,6 +254,8 @@
   --shadow-sm: rgba(231, 111, 81, 0.05);
   --shadow-md: rgba(231, 111, 81, 0.1);
   --shadow-lg: rgba(231, 111, 81, 0.15);
+
+  --primary-ink: #9a3412;
 }
 
 /* 冬季主题 */
@@ -298,6 +311,8 @@
   --shadow-sm: rgba(148, 163, 184, 0.05);
   --shadow-md: rgba(148, 163, 184, 0.1);
   --shadow-lg: rgba(148, 163, 184, 0.15);
+
+  --primary-ink: #475569;
 }
 
 /* 自定义主题 */
@@ -353,4 +368,6 @@
   --shadow-sm: rgba(45, 52, 54, 0.05);
   --shadow-md: rgba(45, 52, 54, 0.1);
   --shadow-lg: rgba(45, 52, 54, 0.15);
+
+  --primary-ink: #b91c1c;
 }

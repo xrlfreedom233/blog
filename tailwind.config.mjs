@@ -16,6 +16,7 @@ export default {
 			colors: {
 				primary: {
 					DEFAULT: alphaVar('primary'),
+					ink: 'var(--primary-ink)',
 					hover: 'var(--primary-hover)',
 					active: 'var(--primary-active)'
 				},

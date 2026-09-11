@@ -21,7 +21,7 @@ const stats = readingTime(post.body);
 				</h2>
 
 				<!-- 整合后的信息行 (日期 | 阅读时间 | 分类) -->
-				<div class="flex flex-wrap items-center gap-y-2 text-base font-bold text-text-muted/60 uppercase tracking-wider">
+				<div class="flex flex-wrap items-center gap-y-2 text-base font-bold text-text-muted/85 uppercase tracking-wider">
 					<!-- 日期 -->
 					<div class="flex items-center gap-1.5 mr-4">
 						<span class="icon-[tabler--calendar] w-4 h-4 opacity-60"></span>
@@ -36,7 +36,7 @@ const stats = readingTime(post.body);
 
 					<!-- 分类 -->
 					{categories && categories.length > 0 && (
-						<div class="flex items-center gap-1.5 px-2.5 py-1 bg-primary/5 text-primary/70 rounded-md">
+						<div class="flex items-center gap-1.5 px-2.5 py-1 bg-primary/5 text-primary-ink rounded-md">
 							<span class="icon-[tabler--folder] w-4 h-4"></span>
 							<span>{categories[0]}</span>
 						</div>

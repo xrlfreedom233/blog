@@ -92,7 +92,7 @@ const tagCloud = tagList.map(([name, count], index) => {
         <a 
 	          href={`/tags/${name}/`}
           title={`${count} 篇文章`}
-          class={`group absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-baseline gap-1.5 whitespace-nowrap font-black leading-none transition-all duration-300 hover:z-20 hover:scale-110 hover:text-primary animate-fade-in no-underline ${index === 0 ? 'z-10 text-primary' : 'text-text-muted'}`}
+          class={`group absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-baseline gap-1.5 whitespace-nowrap font-black leading-none transition-all duration-300 hover:z-20 hover:scale-110 hover:text-primary animate-fade-in no-underline ${index === 0 ? 'z-10 text-primary-ink' : 'text-text-muted'}`}
           style={`left: ${x}%; top: ${y}%; animation-delay: ${delay}ms; font-size: clamp(14px, ${size}px, ${index === 0 ? '52px' : '36px'})`}
         >
           <span class="opacity-50">#</span>

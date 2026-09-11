@@ -20,7 +20,7 @@ const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 					上一页
 				</a>
 			) : (
-				<span class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-200/60 text-text-muted/40 cursor-not-allowed">
+				<span aria-disabled="true" class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-200/60 text-text-muted/85 cursor-not-allowed">
 					上一页
 				</span>
 			)}
@@ -47,7 +47,7 @@ const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 					下一页
 				</a>
 			) : (
-				<span class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-200/60 text-text-muted/40 cursor-not-allowed">
+				<span aria-disabled="true" class="px-4 py-2 text-base font-bold rounded-lg border border-border-base bg-base-200/60 text-text-muted/85 cursor-not-allowed">
 					下一页
 				</span>
 			)}
