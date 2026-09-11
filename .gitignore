@@ -26,6 +26,9 @@ assets/fonts-src/
 # 构建时自动生成的字体子集（见 scripts/subset-fonts.mjs）
 public/fonts/
 
+# 未完成的草稿（写完并发布后删除本行，改回跟踪）
+src/content/blog/ai学习.md
+
 # macOS-specific files
 .DS_Store
 
