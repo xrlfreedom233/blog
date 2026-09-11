@@ -2,11 +2,32 @@
 @import './theme/scrollbar.css';
 @import './article/index.scss';
 
+/* 正文字体：MiSans 子集（见 scripts/subset-fonts.mjs）。
+   字重整体下调一档：加粗统一走 Demibold(600)，避免 MiSans Bold 观感过重。
+   400/500 → Regular，600~900 → Demibold。 */
+@font-face {
+  font-family: 'MiSans';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/misans-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'MiSans';
+  font-style: normal;
+  font-weight: 600 900;
+  font-display: swap;
+  src: url('/fonts/misans-demibold.woff2') format('woff2');
+}
+
 /* 基础样式 */
 body {
   background: var(--base-100);
   color: var(--text-base);
-  font-family: blog-font, sans-serif;
+  font-family:
+    'MiSans', -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
   overflow-x: hidden;
 }
 
@@ -70,6 +91,17 @@ pre {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
 
+/* 客户端路由切换时（html 被加上 .vt-nav）禁用入场动画，让内容立即显示，
+   避免 ViewTransitions 捕获到 opacity:0 的空白帧而闪动。
+   opacity:1 是为了覆盖部分页面里配合动画的 .opacity-0 起始类。 */
+html.vt-nav .animate-fade-in,
+html.vt-nav .animate-fade-in-up {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+
+
 /* 滚动条样式 */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 4px; }
@@ -78,12 +110,15 @@ pre {
 
 [x-cloak] { display: none !important; }
 
-/* 首页与文章分页的阅读区背景 */
+/* 首页与文章阅读区背景
+   收尾色标用 100vh 而不是 100%：百分比会随正文长度拉伸，长文章的可见区
+   会长时间停在较深的中段色上，和短文章并排看就明显偏深。改成按视口高度
+   截断后，所有页面在同一滚动位置的颜色完全一致。 */
 .home-surface {
   position: relative;
   overflow: hidden;
   background:
-    linear-gradient(180deg, var(--base-100) 0%, #f6f9fb 18rem, #eef4f7 46rem, #f8fafc 100%);
+    linear-gradient(180deg, var(--base-100) 0%, #f6f9fb 18rem, #eef4f7 46rem, #f8fafc 100vh);
 }
 
 .home-surface::before {
@@ -96,25 +131,32 @@ pre {
     linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
   background-size: 32px 32px;
-  mask-image: linear-gradient(180deg, transparent 0, black 12rem, black 85%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, black 12rem, black 70vh, transparent 100vh);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, black 12rem, black 70vh, transparent 100vh);
   opacity: 0.45;
 }
 
+/* 光晕也限制在首屏高度内，否则长文章里渐变比例被拉大，整页会偏色。
+   顶部用 mask 淡入：否则正文区第一行就带上了青/琥珀色偏，
+   和上方 hero 淡出后的纯 --base-100 之间会有一条明显接缝。 */
 .home-surface::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 0 auto 0;
+  height: 100vh;
   pointer-events: none;
   z-index: 0;
   background:
     linear-gradient(115deg, rgba(20, 184, 166, 0.08), transparent 34%),
     linear-gradient(245deg, rgba(245, 158, 11, 0.08), transparent 30%);
+  mask-image: linear-gradient(180deg, transparent 0, black 10rem);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, black 10rem);
 }
 
 .dark .home-surface,
 [data-theme="dark"] .home-surface {
   background:
-    linear-gradient(180deg, var(--base-100) 0%, #171923 20rem, #111827 100%);
+    linear-gradient(180deg, var(--base-100) 0%, #171923 20rem, #111827 100vh);
 }
 
 .dark .home-surface::before,
@@ -129,8 +171,16 @@ pre {
     linear-gradient(245deg, rgba(99, 102, 241, 0.08), transparent 32%);
 }
 
-/* 字体相关 */
-@font-face {
-  font-family: blog-font;
-  src: url("./font/font.woff2");
+/* ViewTransitions：关闭浏览器默认的“整体交叉淡入”。
+   新旧页面同时半透明叠加时，上一页的大标题会和当前页的标题/标签重影，
+   视觉上就是切换时“闪一下”。改为瞬时切换，避免重影与混合闪烁。 */
+::view-transition-group(root) {
+  animation-duration: 0s !important;
+}
+::view-transition-old(root) {
+  display: none !important;
+  animation: none !important;
+}
+::view-transition-new(root) {
+  animation: none !important;
 }

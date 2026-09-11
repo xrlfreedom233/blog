@@ -1,6 +1,12 @@
 import typography from '@tailwindcss/typography';
 import { addDynamicIconSelectors } from '@iconify/tailwind';
 
+// Tailwind v3 只有颜色值里包含 <alpha-value> 时才支持 /透明度 修饰符。
+// 主题色都是 CSS 变量（var(--x)），直接用 bg-primary/5 会生成不出任何样式，
+// 这里用 color-mix 包一层，让 bg-primary/5、text-text-muted/60 等正常生效。
+const alphaVar = (name) =>
+	`color-mix(in srgb, var(--${name}) calc(<alpha-value> * 100%), transparent)`;
+
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
@@ -9,7 +15,7 @@ export default {
 		extend: {
 			colors: {
 				primary: {
-					DEFAULT: 'var(--primary)',
+					DEFAULT: alphaVar('primary'),
 					hover: 'var(--primary-hover)',
 					active: 'var(--primary-active)'
 				},
@@ -29,8 +35,8 @@ export default {
 					active: 'var(--neutral-active)'
 				},
 				base: {
-					100: 'var(--base-100)',
-					200: 'var(--base-200)',
+					100: alphaVar('base-100'),
+					200: alphaVar('base-200'),
 					300: 'var(--base-300)',
 					content: 'var(--base-content)'
 				},
@@ -51,13 +57,13 @@ export default {
 					content: 'var(--error-content)'
 				},
 				text: {
-					base: 'var(--text-base)',
-					muted: 'var(--text-muted)',
+					base: alphaVar('text-base'),
+					muted: alphaVar('text-muted'),
 					disabled: 'var(--text-disabled)',
 					placeholder: 'var(--text-placeholder)'
 				},
 				border: {
-					base: 'var(--border-base)',
+					base: alphaVar('border-base'),
 					light: 'var(--border-light)'
 				},
 				scrollbar: {

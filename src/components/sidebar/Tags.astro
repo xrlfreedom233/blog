@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+	// 传入当前所在的标签，会在列表里高亮
+	active?: string;
+}
+
+const { active } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const allTagsBase = [...new Set(allPosts.flatMap(post => post.data.tags || []))];
+const tagsTop = allTagsBase.slice(0, 12);
+// 保证当前标签始终在列表里，以便高亮显示
+const tags = active && !tagsTop.includes(active) ? [active, ...allTagsBase.slice(0, 11)] : tagsTop;
+---
+
+<div class="bg-base-100 p-6 rounded-2xl shadow-sm border border-border-base animate-fade-in">
+	<h3 class="text-xl font-bold mb-4 dark:text-white flex items-center gap-2">
+		<span class="icon-[tabler--hash] w-5 h-5 text-rose-400"></span>
+		Tags
+	</h3>
+	<div class="flex flex-wrap gap-2">
+		{tags.map(t => (
+			<a
+				href={`/tags/${t}/`}
+				class={`rounded-full border px-3 py-1 text-sm font-semibold no-underline transition-all hover:-translate-y-0.5 ${t === active ? 'border-primary bg-primary text-white' : 'border-border-base bg-base-200 text-text-muted hover:border-primary hover:bg-primary hover:text-white'}`}
+			>
+				#{t}
+			</a>
+		))}
+	</div>
+</div>

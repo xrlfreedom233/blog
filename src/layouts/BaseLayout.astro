@@ -16,11 +16,33 @@ import { ViewTransitions } from 'astro:transitions';
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script is:inline>
+			// 在首屏绘制前应用主题，避免深色/四季主题先闪一下亮色（FOUC）
+			try {
+				const urlTheme = new URLSearchParams(window.location.search).get('theme');
+				if (urlTheme) localStorage.setItem('theme', urlTheme);
+				const theme = localStorage.getItem('theme') || 'light';
+				document.documentElement.setAttribute('data-theme', theme);
+				if (theme === 'dark') document.documentElement.classList.add('dark');
+			} catch (e) {}
+
+			// 客户端路由切换时给 <html> 打标记，禁用入场动画，避免切页面时出现闪动。
+			document.addEventListener('astro:before-swap', (e) => {
+				e.newDocument?.documentElement?.classList.add('vt-nav');
+			});
+			document.addEventListener('astro:after-swap', () => {
+				document.documentElement.classList.add('vt-nav');
+			});
+		</script>
 		<link rel="icon" type="image/x-icon" href="https://tuchuang.xrlfreedom.top/2026/04/19d23f3d87c7ac449c8abbe36a4edbf0.webp" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<ViewTransitions />
+		<ViewTransitions fallback="swap" />
+
+		<!-- 正文字体（MiSans 子集）预加载，减少字体切换闪烁 -->
+		<link rel="preload" as="font" type="font/woff2" href="/fonts/misans-regular.woff2" crossorigin />
+		<link rel="preload" as="font" type="font/woff2" href="/fonts/misans-demibold.woff2" crossorigin />
 
 		<!-- SEO Meta Tags -->
 		<link rel="canonical" href={Astro.url} />

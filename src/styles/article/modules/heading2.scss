@@ -23,12 +23,12 @@ h6 {
 }
 
 h1 {
-  font-size: 2.2rem;
-  border-bottom: 2px solid var(--md-theme-border-color);
-  padding-bottom: 0.5rem;
+  // 正文里若用了 # 一级标题，样式与 ## 统一，避免和其它文章"格式不一样"
+  font-size: 1.8rem;
+  padding-bottom: 0.4rem;
 
   &::before {
-    content: '🌴';
+    content: '🥀';
   }
 }
 

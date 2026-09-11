@@ -42,18 +42,15 @@
   100% { transform: translate3d(85px, 0, 0); }
 }
 
-/* 极致透明颜色逻辑 */
-/* 统一使用白色系，通过不透明度产生层次 */
-.wave-1 { fill: rgba(255, 255, 255, 0.25); }
-.wave-2 { fill: rgba(255, 255, 255, 0.2); }
-.wave-3 { fill: rgba(255, 255, 255, 0.1); }
-.wave-4 { fill: rgba(255, 255, 255, 0.4); }
-
-/* 暗色模式下改用灰色系，防止过亮 */
-:global(.dark) .wave-1 { fill: rgba(31, 41, 55, 0.25); }
-:global(.dark) .wave-2 { fill: rgba(31, 41, 55, 0.2); }
-:global(.dark) .wave-3 { fill: rgba(31, 41, 55, 0.1); }
-:global(.dark) .wave-4 { fill: rgba(31, 41, 55, 0.4); }
+/* 波浪颜色跟随页面背景色 --base-100。
+   之前写死纯白，在非纯白背景的主题（冬季 #F8FAFC、夏季 #F0FCFF 等）
+   里，波浪底部和正文背景接缝处会出现一条明显的水平分界线。
+   用 --base-100 后，波浪盖在已淡出到背景色的区域上时能无缝衔接；
+   暗色主题也会自动跟着变深，无需再单独覆盖。 */
+.wave-1 { fill: var(--base-100); fill-opacity: 0.25; }
+.wave-2 { fill: var(--base-100); fill-opacity: 0.2; }
+.wave-3 { fill: var(--base-100); fill-opacity: 0.1; }
+.wave-4 { fill: var(--base-100); fill-opacity: 0.4; }
 
 @media (max-width: 768px) {
   .ripple-container, .waves {

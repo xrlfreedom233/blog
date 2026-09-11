@@ -11,7 +11,7 @@ const { title, pubDate, tags, categories } = post.data;
 const stats = readingTime(post.body);
 ---
 
-<article class="group">
+<article class="group" transition:name={`post-${post.slug}`}>
 	<div class="post-card-shell rounded-xl overflow-hidden relative block cursor-pointer border transition-all duration-300 hover:scale-[1.01] bg-base-100">
 		<a href={`/blog/${post.slug}/`} class="p-7 md:p-9 block">
 			<div class="flex flex-col h-full">

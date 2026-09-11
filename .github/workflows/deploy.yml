@@ -25,6 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache font sources
+        uses: actions/cache@v4
+        with:
+          path: assets/fonts-src
+          key: misans-source-v2
+
       - name: Build Astro
         run: npm run build
 

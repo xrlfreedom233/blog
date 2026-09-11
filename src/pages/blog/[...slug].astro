@@ -4,6 +4,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Ripple from '../../components/common/Ripple.astro';
+import AuthorCard from '../../components/sidebar/AuthorCard.astro';
+import PopularPosts from '../../components/sidebar/PopularPosts.astro';
+import Categories from '../../components/sidebar/Categories.astro';
+import Tags from '../../components/sidebar/Tags.astro';
 import readingTime from 'reading-time';
 
 export async function getStaticPaths() {
@@ -30,18 +34,24 @@ const showUpdatedDate = updatedDate && updatedDate.valueOf() !== pubDate.valueOf
 	<Header />
 	
 	<!-- 找回的大图区域 (Post Hero) -->
-	<section class="relative h-[50vh] min-h-[400px] w-full overflow-hidden flex items-center justify-center">
+	<!-- bg-[#3f4936]：hero 大图尚未绘制时的占位底色，避免首屏未加载完成时白屏闪烁。 -->
+	<section transition:name={`post-${post.slug}`} class="relative h-[50vh] min-h-[400px] w-full overflow-hidden flex items-center justify-center bg-[#3f4936] dark:bg-[#2b3126]">
 		<div class="absolute inset-0 z-0">
+			<!-- 不使用 transition-all，避免页面切入时图片 brightness 渐变导致上层标签出现闪烁 -->
 			<img 
 				src={heroImage || "/images/imbg.avif"} 
 				alt={title} 
-				class="h-full w-full object-cover brightness-[0.6] dark:brightness-[0.4] transition-all duration-700"
+				width="1600"
+				height="900"
+				fetchpriority="high"
+				decoding="sync"
+				class="h-full w-full object-cover brightness-[0.6] dark:brightness-[0.4]"
 			/>
 			<div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-base-100"></div>
 		</div>
 
 		<!-- 文字内容 -->
-		<div class="relative z-10 text-center px-4 max-w-4xl animate-fade-in">
+		<div class="relative z-10 text-center px-4 max-w-4xl">
 			<div class="flex flex-wrap justify-center gap-2 mb-6">
 				{categories && categories.map(cat => (
 					<a href={`/categories/${cat}/`} class="px-4 py-1.5 bg-primary text-white rounded-full text-base font-black uppercase tracking-wider shadow-lg">
@@ -49,7 +59,7 @@ const showUpdatedDate = updatedDate && updatedDate.valueOf() !== pubDate.valueOf
 					</a>
 				))}
 				{tags && tags.map(tag => (
-					<a href={`/tags/${tag}/`} class="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-base font-black text-white uppercase tracking-wider border border-white/30">
+					<a href={`/tags/${tag}/`} class="px-4 py-1.5 bg-white/20 hover:bg-white/30 rounded-full text-base font-black text-white uppercase tracking-wider border border-white/30 transition-colors">
 						#{tag}
 					</a>
 				))}
@@ -77,12 +87,20 @@ const showUpdatedDate = updatedDate && updatedDate.valueOf() !== pubDate.valueOf
 	</section>
 
 	<!-- 修改后的正文区域：使用 mx-auto 和 max-w 确保居中 -->
-	<main class="container mx-auto px-4 py-16 max-w-6xl">
-		<div class="flex flex-col lg:flex-row gap-16 justify-center">
+	<main class="home-surface min-h-screen">
+		<div class="container mx-auto px-4 py-16 max-w-[1520px]">
+		<div class="flex flex-col lg:flex-row gap-8 justify-end">
 			
 			<!-- Article Content (专注阅读宽度) -->
-			<article class="w-full lg:max-w-[800px] animate-fade-in" style="animation-delay: 300ms">
-				<div id="articleContentId" class="article-content prose prose-xl dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-img:rounded-2xl prose-pre:bg-gray-900 dark:prose-pre:bg-black/50">
+			<aside class="hidden lg:block w-64 shrink-0 space-y-10">
+				<AuthorCard />
+				<Categories />
+				<PopularPosts />
+				<Tags />
+			</aside>
+
+			<article class="w-full min-w-0 flex-1 lg:max-w-[880px]">
+				<div id="articleContentId" class="article-content prose prose-xl dark:prose-invert max-w-none bg-base-100/80 backdrop-blur-sm rounded-2xl border border-border-base shadow-sm prose-headings:scroll-mt-24 prose-img:rounded-2xl prose-pre:bg-gray-900 dark:prose-pre:bg-black/50">
 					<Content />
 				</div>
 
@@ -118,7 +136,7 @@ const showUpdatedDate = updatedDate && updatedDate.valueOf() !== pubDate.valueOf
 			</article>
 
 			<!-- TOC Sidebar (右侧悬浮) -->
-			<aside class="hidden xl:block w-64">
+			<aside class="hidden xl:block w-56 shrink-0">
 				<div class="sticky top-24" x-data="{ 
 					catalog: [], 
 					activeIndex: -1,
@@ -144,30 +162,29 @@ const showUpdatedDate = updatedDate && updatedDate.valueOf() !== pubDate.valueOf
 						this.activeIndex = this.catalog.findIndex(c => c.id === currentId);
 					}
 				}" x-init="init()">
-					<div class="bg-base-100 p-6 rounded-2xl shadow-sm border border-border-base/50">
-						<h3 class="text-base font-black mb-4 dark:text-white uppercase tracking-widest text-primary">
-							Catalog
+					<div class="bg-base-100 p-5 rounded-2xl shadow-sm border border-border-base">
+						<h3 class="mb-4 flex items-center gap-2 text-lg font-bold dark:text-white">
+							<span class="icon-[tabler--bookmark] w-5 h-5 text-primary"></span>
+							目录
 						</h3>
-						<nav class="space-y-1 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+						<nav class="max-h-[70vh] space-y-1 overflow-y-auto pr-1 custom-scrollbar">
 							<template x-for="(item, index) in catalog" :key="index">
-								<a 
+								<a
 									:href="'#' + item.id"
-									class="block py-2 text-base transition-all duration-200 rounded-lg px-2"
-									:class="{
-										'font-bold': item.level === 1,
-										'ml-0': item.level === 1,
-										'ml-3': item.level === 2,
-										'ml-6': item.level === 3,
-										'text-text-muted hover:text-primary hover:bg-primary/5': activeIndex !== index,
-										'text-primary bg-primary/10': activeIndex === index
-									}"
-									x-text="item.text"
-								></a>
+									class="group flex items-start gap-3 rounded-xl px-2 py-2 no-underline transition-colors"
+									:class="activeIndex === index ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-primary/5 hover:text-primary'"
+								>
+									<span class="mt-px flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-white">
+										<span x-text="index + 1"></span>
+									</span>
+									<span class="text-sm leading-snug" x-text="item.text"></span>
+								</a>
 							</template>
 						</nav>
 					</div>
 				</div>
 			</aside>
+		</div>
 		</div>
 	</main>
 

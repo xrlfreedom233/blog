@@ -11,22 +11,27 @@ const footerConfig = {
 ---
 
 <div class="relative mt-20">
-	<!-- 动物装饰图 - 彻底贴合边缘 -->
-	<div class="fixed bottom-0 left-0 w-full z-[10] pointer-events-none select-none">
+	<!-- 动物装饰图 - 刚好贴合底边水平线（双手趴在底边） -->
+	<div class="fixed bottom-0 left-0 w-full z-30 pointer-events-none select-none">
 		<div class="flex justify-center w-full">
-			<img
-				src={footerConfig.animalImage}
-				alt="动物装饰"
-				class="h-16 md:h-24 w-full object-contain object-bottom opacity-100"
-			/>
+			<div id="animal-dock" class="animal-dock pointer-events-auto cursor-pointer drop-shadow-sm">
+				<img
+					src={footerConfig.animalImage}
+					alt="动物装饰"
+					width="1200"
+					height="145"
+					decoding="async"
+					class="h-16 md:h-20 w-auto max-w-full object-contain object-bottom opacity-100"
+				/>
+			</div>
 		</div>
 	</div>
 
-	<footer class="relative z-20 bg-white/80 dark:bg-gray-900/80 border-t border-gray-100 dark:border-gray-800 py-12 backdrop-blur-md mt-16">
+	<footer class="relative z-20 bg-base-100/80 dark:bg-base-100/80 border-t border-border-base pt-12 pb-24 md:pb-28 backdrop-blur-md mt-16">
 		<div class="container mx-auto px-4">
 			<!-- 个性化标语 -->
 			<div class="mb-8 text-center">
-				<p class="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-lg font-medium italic text-transparent dark:from-teal-300 dark:to-blue-300 animate-fade-in">
+				<p class="bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-lg font-medium italic text-transparent dark:from-teal-300 dark:to-blue-300">
 					{footerConfig.slogan}
 				</p>
 			</div>
@@ -88,15 +93,45 @@ const footerConfig = {
 		(window as any).__freedomRuntimeTimer = window.setInterval(updateRuntime, 1000);
 	}
 
-	document.addEventListener('astro:page-load', setupSiteRuntime);
+	function setupAnimalDock() {
+		const dock = document.getElementById('animal-dock');
+		if (!dock) return;
+
+		const handleScroll = () => {
+			const scrollDistanceToBottom = document.documentElement.scrollHeight - (window.innerHeight + window.scrollY);
+			// 触底判定：当滚动离页面最底部在 120px 以内时触发露出双手
+			if (scrollDistanceToBottom <= 120) {
+				dock.classList.add('at-bottom');
+			} else {
+				dock.classList.remove('at-bottom');
+			}
+		};
+
+		if ((window as any).__freedomAnimalScrollHandler) {
+			window.removeEventListener('scroll', (window as any).__freedomAnimalScrollHandler);
+		}
+		(window as any).__freedomAnimalScrollHandler = handleScroll;
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		handleScroll();
+	}
+
+	// 初始加载及 ViewTransitions 页面切换时均进行挂载
+	setupAnimalDock();
+	document.addEventListener('astro:page-load', () => {
+		setupSiteRuntime();
+		setupAnimalDock();
+	});
 </script>
 
 <style>
-	.animate-fade-in {
-		animation: fadeIn 1s ease-out;
+	.animal-dock {
+		transform: translateY(28%);
+		transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+		will-change: transform;
 	}
-	@keyframes fadeIn {
-		from { opacity: 0; transform: translateY(10px); }
-		to { opacity: 1; transform: translateY(0); }
+
+	.animal-dock:hover,
+	.animal-dock.at-bottom {
+		transform: translateY(8%);
 	}
 </style>

@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+	// 传入当前所在的分类名，会在列表里高亮
+	active?: string;
+}
+
+const { active } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const categoryCounts = allPosts.reduce((acc, post) => {
+	post.data.categories?.forEach(cat => { acc[cat] = (acc[cat] || 0) + 1; });
+	return acc;
+}, {} as Record<string, number>);
+const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]);
+---
+
+<div class="bg-base-100 p-6 rounded-2xl shadow-sm border border-border-base animate-fade-in">
+	<h3 class="text-xl font-bold mb-4 dark:text-white flex items-center gap-2">
+		<span class="icon-[tabler--folder] w-5 h-5 text-primary"></span>
+		Categories
+	</h3>
+	<ul class="space-y-1 list-none p-0 m-0">
+		{categories.map(([name, count]) => (
+			<li>
+				<a
+					href={`/categories/${name}/`}
+					class={`group flex items-center justify-between gap-3 rounded-xl px-3 py-2 no-underline transition-colors ${name === active ? 'bg-base-200' : 'text-text-muted hover:bg-base-200'}`}
+				>
+					<span class={`flex min-w-0 items-center gap-2.5 text-base font-semibold transition-colors ${name === active ? 'text-primary' : 'group-hover:text-primary'}`}>
+						<span class={`h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary transition-transform ${name === active ? 'scale-125' : 'group-hover:scale-125'}`}></span>
+						<span class="truncate">{name}</span>
+					</span>
+					<span class={`flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-bold tabular-nums transition-colors ${name === active ? 'bg-primary text-white' : 'bg-base-200 text-text-muted group-hover:bg-primary group-hover:text-white'}`}>{count}</span>
+				</a>
+			</li>
+		))}
+	</ul>
+</div>

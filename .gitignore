@@ -20,6 +20,12 @@ pnpm-debug.log*
 # extracted Halo data
 halo-extract/
 
+# 字体源文件（体积大，仅用于生成 public/fonts 子集）
+assets/fonts-src/
+
+# 构建时自动生成的字体子集（见 scripts/subset-fonts.mjs）
+public/fonts/
+
 # macOS-specific files
 .DS_Store
 

@@ -29,7 +29,10 @@ const pagePosts = posts.slice(0, PAGE_SIZE);
 const getPageHref = (page: number) => page === 1 ? `/tags/${tag}/` : `/tags/${tag}/${page}/`;
 
 const allPosts = await getCollection('blog');
-const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))].slice(0, 10);
+const allTagsBase = [...new Set(allPosts.flatMap(post => post.data.tags || []))];
+const allTagsTop = allTagsBase.slice(0, 10);
+// 保证当前标签始终在列表里，以便高亮显示
+const allTags = allTagsTop.includes(tag) ? allTagsTop : [tag, ...allTagsBase.slice(0, 9)];
 ---
 
 <BaseLayout title={`标签: ${tag} | freedom`}>
@@ -51,19 +54,19 @@ const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))].sli
 
       <aside class="w-full lg:w-1/4 space-y-12">
         <AuthorCard />
-        <section class="px-2 animate-fade-in">
-	          <h3 class="text-base font-black text-text-muted/60 uppercase tracking-[0.24em] mb-6 flex items-center gap-3">
-            <span class="w-8 h-[1px] bg-border-base/50"></span>
-            Tags
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            {allTags.map(t => (
-	              <a href={`/tags/${t}/`} class={`px-3 py-1.5 text-base font-bold rounded-lg transition-all ${t === tag ? 'bg-primary text-white' : 'bg-base-200/50 text-text-muted/60 hover:text-primary'}`}>
-                #{t}
-              </a>
-            ))}
-          </div>
-        </section>
+        <section class="bg-base-100 p-6 rounded-2xl shadow-sm border border-border-base animate-fade-in">
+  <h3 class="text-xl font-bold mb-4 dark:text-white flex items-center gap-2">
+    <span class="icon-[tabler--hash] w-5 h-5 text-rose-400"></span>
+    Tags
+  </h3>
+  <div class="flex flex-wrap gap-2">
+    {allTags.map(t => (
+      <a href={`/tags/${t}/`} class={`rounded-full border px-3 py-1 text-sm font-semibold no-underline transition-all hover:-translate-y-0.5 ${t === tag ? 'border-primary bg-primary text-white' : 'border-border-base bg-base-200 text-text-muted hover:border-primary hover:bg-primary hover:text-white'}`}>
+        #{t}
+      </a>
+    ))}
+  </div>
+</section>
         <PopularPosts />
       </aside>
     </div>

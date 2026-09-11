@@ -5,6 +5,9 @@ import Search from './common/Search.astro';
 interface MenuItem {
 	name: string;
 	href: string;
+	target?: string;
+	rel?: string;
+	title?: string;
 	children?: MenuItem[];
 }
 
@@ -14,6 +17,7 @@ const menuItems: MenuItem[] = [
 	{ name: '分类', href: '/categories/' },
 	{ name: '标签', href: '/tags/' },
 	{ name: '友情链接', href: '/links/' },
+	{ name: '开往', href: 'https://www.travellings.cn/go.html', target: '_blank', rel: 'noopener noreferrer', title: '开往-友链接力' },
 	{ name: '关于我', href: '/about/' },
 ];
 
@@ -28,6 +32,7 @@ const forceSolidHeader = solidHeaderPaths.includes(currentPath);
 ---
 
 <header
+  transition:persist="main-header"
   x-data={`{ isVisible: true, lastScrollY: 0, isScrolled: false, mobileMenuOpen: false, forceSolidHeader: ${forceSolidHeader} }`}
   x-init="
     if (window.__freedomHeaderScrollHandler) {
@@ -42,9 +47,14 @@ const forceSolidHeader = solidHeaderPaths.includes(currentPath);
     };
 
     window.addEventListener('scroll', window.__freedomHeaderScrollHandler);
+    document.addEventListener('astro:after-swap', () => {
+      mobileMenuOpen = false;
+      window.__freedomHeaderScrollHandler && window.__freedomHeaderScrollHandler();
+    });
     window.__freedomHeaderScrollHandler();
   "
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  style="background-color: transparent;"
   :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'background-color: var(--base-100); box-shadow: var(--shadow-lg);' : 'background-color: transparent;'"
 >
   <nav class="container mx-auto px-6">
@@ -57,7 +67,8 @@ const forceSolidHeader = solidHeaderPaths.includes(currentPath);
             class="h-9 w-9 rounded-full transition-all duration-500 group-hover:rotate-[360deg] shadow-md ring-2 ring-white/20 object-cover"
           />
 	          <span 
-	            class="text-xl font-bold tracking-tight transition-colors duration-300"
+	            class="text-xl font-bold tracking-tight text-white transition-colors duration-300"
+	            style="color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"
 	            :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));'"
 	          >
             {site.title}
@@ -70,7 +81,11 @@ const forceSolidHeader = solidHeaderPaths.includes(currentPath);
             <div class="relative group">
               <a
 	                href={item.href}
-	                class="px-4 py-2 text-base font-bold transition-all duration-300 relative inline-block"
+	                target={item.target || undefined}
+	                rel={item.rel || undefined}
+	                title={item.title || undefined}
+	                class="px-4 py-2 text-base font-bold text-white/90 transition-all duration-300 relative inline-block"
+	                style="color: rgba(255,255,255,0.9);"
 	                :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: rgba(255,255,255,0.9);'"
 	              >
                 {item.name}
@@ -82,18 +97,19 @@ const forceSolidHeader = solidHeaderPaths.includes(currentPath);
       </div>
 
 	      <div class="flex items-center space-x-4">
-	        <div class="transition-colors duration-300" :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'">
+	        <div class="text-white transition-colors duration-300" style="color: white;" :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'">
 	          <Search />
 	        </div>
 	        
-	        <div class="theme-switch-wrapper" :class="forceSolidHeader || isScrolled || mobileMenuOpen ? 'text-text-base' : 'text-white'">
+	        <div class="theme-switch-wrapper text-white" :class="forceSolidHeader || isScrolled || mobileMenuOpen ? 'text-text-base' : 'text-white'">
 	            <ThemeSwitch />
 	        </div>
         
         <!-- Mobile Menu Button -->
         <button
 	          @click="mobileMenuOpen = !mobileMenuOpen"
-	          class="md:hidden p-2 transition-colors relative z-[60]"
+	          class="md:hidden p-2 text-white transition-colors relative z-[60]"
+	          style="color: white;"
 	          :style="forceSolidHeader || isScrolled || mobileMenuOpen ? 'color: var(--text-base);' : 'color: white;'"
 	        >
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -130,6 +146,9 @@ const forceSolidHeader = solidHeaderPaths.includes(currentPath);
         {menuItems.map(item => (
           <a 
             href={item.href} 
+            target={item.target || undefined}
+            rel={item.rel || undefined}
+            title={item.title || undefined}
             class="text-xl font-bold hover:text-primary transition-all flex items-center justify-between group"
             style="color: var(--text-base);"
             @click="mobileMenuOpen = false"

@@ -1,16 +1,10 @@
 @use 'variables' as *;
 @use 'mixins' as *;
 
-// 代码块样式  使用插件完成
+// 代码块样式（背景/圆角等由 main.css 与 prose 处理）
+// 上下间距统一成与段落一致的 24px，避免代码块多的文章显得松散
 .article-content pre {
-  //margin: $spacing-xl 0;
-  //overflow-x: auto;
-  //border-radius: $radius-lg;
-  //padding: $spacing-base;
-  //background-color: $bg-code;
-  //color: $text-light;
-
- 
+  margin: 1.5rem 0;
 }
 
 //// 行内代码样式
