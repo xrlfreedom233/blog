@@ -40,6 +40,10 @@ import { ViewTransitions } from 'astro:transitions';
 		<meta name="description" content={description} />
 		<ViewTransitions fallback="swap" />
 
+		<!-- Umami：全站访问分析、会话回放与热力图 -->
+		<script is:inline defer src="https://umami.xrlfreedom.top/recorder.js" data-website-id="8c21481f-d4ae-4e7b-b749-3265771e36eb"></script>
+		<script is:inline defer src="https://umami.xrlfreedom.top/script.js" data-website-id="8c21481f-d4ae-4e7b-b749-3265771e36eb"></script>
+
 		<!-- 正文字体（MiSans 子集）预加载，减少字体切换闪烁 -->
 		<link rel="preload" as="font" type="font/woff2" href="/fonts/misans-regular.woff2" crossorigin />
 		<link rel="preload" as="font" type="font/woff2" href="/fonts/misans-demibold.woff2" crossorigin />
