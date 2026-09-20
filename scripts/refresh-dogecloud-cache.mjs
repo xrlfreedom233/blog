@@ -137,18 +137,24 @@ async function waitForRefreshPropagation(taskId) {
   console.warn(`DogeCloud article refresh is still processing after ${REFRESH_WAIT_MS / 1000} seconds`);
 }
 
-const { refreshUrls, prefetchUrls } = getChangedPostUrls();
+const {
+  refreshUrls: changedArticleUrls,
+  prefetchUrls: changedArticlePrefetchUrls,
+} = getChangedPostUrls();
 
-if (refreshUrls.length === 0) {
+if (changedArticleUrls.length === 0) {
   console.log('No changed blog posts; DogeCloud cache refresh skipped');
   process.exit(0);
 }
 
+const refreshUrls = [...new Set([SITE_URL, ...changedArticleUrls])];
+const prefetchUrls = [...new Set([SITE_URL, ...changedArticlePrefetchUrls])];
+
 const refreshTaskId = await createTask('url', refreshUrls);
-console.log(`DogeCloud refresh submitted for ${refreshUrls.length} changed article(s): ${refreshTaskId}`);
+console.log(
+  `DogeCloud refresh submitted for the homepage and ${changedArticleUrls.length} changed article(s): ${refreshTaskId}`
+);
 await waitForRefreshPropagation(refreshTaskId);
 
-if (prefetchUrls.length > 0) {
-  const prefetchTaskId = await createTask('prefetch', prefetchUrls);
-  console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} changed article(s): ${prefetchTaskId}`);
-}
+const prefetchTaskId = await createTask('prefetch', prefetchUrls);
+console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} targeted URL(s): ${prefetchTaskId}`);
