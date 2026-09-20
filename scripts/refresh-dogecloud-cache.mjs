@@ -9,6 +9,10 @@ if (!accessKey || !secretKey) {
 
 const SITE_URL = 'https://blog.xrlfreedom.top/';
 const SITEMAP_URL = new URL('sitemap-index.xml', SITE_URL).href;
+const CRITICAL_ASSET_URLS = [
+  new URL('fonts/misans-regular.woff2', SITE_URL).href,
+  new URL('fonts/misans-demibold.woff2', SITE_URL).href,
+];
 const MAX_PREFETCH_URLS = 1000;
 const POLL_INTERVAL_MS = 3000;
 const REFRESH_WAIT_MS = 120000;
@@ -117,7 +121,7 @@ async function getSitemapUrls() {
       }
     });
 
-  const uniqueUrls = [...new Set(urls)];
+  const uniqueUrls = [...new Set([...urls, ...CRITICAL_ASSET_URLS])];
 
   if (uniqueUrls.length === 0) {
     throw new Error('The sitemap did not contain any same-origin URLs');
@@ -136,4 +140,4 @@ await waitForRefreshPropagation(refreshTaskId);
 
 const prefetchUrls = await getSitemapUrls();
 const prefetchTaskId = await createTask('prefetch', prefetchUrls);
-console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} pages: ${prefetchTaskId}`);
+console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} pages/assets: ${prefetchTaskId}`);
