@@ -61,20 +61,28 @@ async function createTask(rtype, urls) {
   return data.task_id;
 }
 
-async function waitForTask(taskId, label) {
+async function waitForTask(taskId, label, { allowPartialFailure = false } = {}) {
   const deadline = Date.now() + TASK_TIMEOUT_MS;
 
   while (Date.now() < deadline) {
     const apiPath = `/cdn/refresh/query.json?id=${encodeURIComponent(taskId)}`;
     const data = await dogecloudApi(apiPath);
     const tasks = data?.tasks ?? [];
+    const failedTasks = tasks.filter(
+      (task) => task.status === 'fail' || task.status === 'invalid'
+    );
+    const pendingTasks = tasks.filter(
+      (task) => !['done', 'fail', 'invalid'].includes(task.status)
+    );
 
-    if (tasks.some((task) => task.status === 'fail' || task.status === 'invalid')) {
-      throw new Error(`${label} failed for one or more URLs`);
-    }
-
-    if (tasks.length > 0 && tasks.every((task) => task.status === 'done')) {
-      console.log(`${label} completed`);
+    if (tasks.length > 0 && pendingTasks.length === 0) {
+      if (failedTasks.length > 0) {
+        const message = `${label} completed with ${failedTasks.length} failed provider task(s)`;
+        if (!allowPartialFailure) throw new Error(message);
+        console.warn(message);
+      } else {
+        console.log(`${label} completed`);
+      }
       return;
     }
 
@@ -132,7 +140,9 @@ async function getSitemapUrls() {
 
 const refreshTaskId = await createTask('path', [SITE_URL]);
 console.log(`DogeCloud directory refresh submitted: ${refreshTaskId}`);
-await waitForTask(refreshTaskId, 'DogeCloud directory refresh');
+// 融合 CDN 的个别上游偶尔会报告刷新失败；等待所有上游结束后仍继续预热，
+// 避免已成功刷新的节点保持冷缓存。
+await waitForTask(refreshTaskId, 'DogeCloud directory refresh', { allowPartialFailure: true });
 
 const prefetchUrls = await getSitemapUrls();
 const prefetchTaskId = await createTask('prefetch', prefetchUrls);
