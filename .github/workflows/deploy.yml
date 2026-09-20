@@ -48,6 +48,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -58,8 +60,10 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Refresh and prefetch DogeCloud CDN cache
+      - name: Refresh changed articles in DogeCloud CDN
         env:
           DOGECLOUD_ACCESS_KEY: ${{ secrets.DOGECLOUD_ACCESS_KEY }}
           DOGECLOUD_SECRET_KEY: ${{ secrets.DOGECLOUD_SECRET_KEY }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
         run: node scripts/refresh-dogecloud-cache.mjs

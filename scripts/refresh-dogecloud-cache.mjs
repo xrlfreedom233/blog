@@ -1,24 +1,77 @@
 import { createHmac } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { basename, extname } from 'node:path';
 
 const accessKey = process.env.DOGECLOUD_ACCESS_KEY;
 const secretKey = process.env.DOGECLOUD_SECRET_KEY;
+const beforeSha = process.env.BEFORE_SHA;
+const currentSha = process.env.CURRENT_SHA;
 
 if (!accessKey || !secretKey) {
   throw new Error('Missing DOGECLOUD_ACCESS_KEY or DOGECLOUD_SECRET_KEY');
 }
 
+if (!/^[0-9a-f]{40}$/i.test(beforeSha ?? '') || !/^[0-9a-f]{40}$/i.test(currentSha ?? '')) {
+  throw new Error('Missing or invalid BEFORE_SHA/CURRENT_SHA');
+}
+
 const SITE_URL = 'https://blog.xrlfreedom.top/';
-const SITEMAP_URL = new URL('sitemap-index.xml', SITE_URL).href;
-const CRITICAL_ASSET_URLS = [
-  new URL('fonts/misans-regular.woff2', SITE_URL).href,
-  new URL('fonts/misans-demibold.woff2', SITE_URL).href,
-];
-const MAX_PREFETCH_URLS = 1000;
 const POLL_INTERVAL_MS = 3000;
 const REFRESH_WAIT_MS = 120000;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function postPathToUrl(path) {
+  const extension = extname(path);
+  const filename = basename(path, extension);
+  const slug = filename
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s_-]/gu, '')
+    .replace(/\s/g, '-');
+
+  if (!slug) throw new Error(`Unable to derive a slug from ${path}`);
+  return new URL(`/blog/${encodeURIComponent(slug)}/`, SITE_URL).href;
+}
+
+function getChangedPostUrls() {
+  if (/^0+$/.test(beforeSha)) {
+    console.warn('GitHub did not provide a previous commit; skipping CDN refresh');
+    return { refreshUrls: [], prefetchUrls: [] };
+  }
+
+  const output = execFileSync(
+    'git',
+    ['diff', '--name-status', '-z', beforeSha, currentSha, '--', 'src/content/blog'],
+    { encoding: 'utf8' }
+  );
+  const fields = output.split('\0').filter(Boolean);
+  const refreshPaths = [];
+  const prefetchPaths = [];
+
+  for (let index = 0; index < fields.length;) {
+    const status = fields[index++];
+
+    if (status.startsWith('R') || status.startsWith('C')) {
+      const oldPath = fields[index++];
+      const newPath = fields[index++];
+      refreshPaths.push(oldPath, newPath);
+      prefetchPaths.push(newPath);
+      continue;
+    }
+
+    const path = fields[index++];
+    if (!path) continue;
+    refreshPaths.push(path);
+    if (!status.startsWith('D')) prefetchPaths.push(path);
+  }
+
+  const isPost = (path) => /\.(md|mdx)$/i.test(path);
+  return {
+    refreshUrls: [...new Set(refreshPaths.filter(isPost).map(postPathToUrl))],
+    prefetchUrls: [...new Set(prefetchPaths.filter(isPost).map(postPathToUrl))],
+  };
 }
 
 async function dogecloudApi(apiPath, data) {
@@ -73,71 +126,29 @@ async function waitForRefreshPropagation(taskId) {
     const data = await dogecloudApi(apiPath);
     const tasks = data?.tasks ?? [];
 
-    // 融合 CDN 会拆成多个上游任务；任一上游进入终态后即可开始提交预热。
-    // 其余上游会继续异步处理，预热任务由多吉云在服务端接续执行。
     if (tasks.some((task) => ['done', 'fail', 'invalid'].includes(task.status))) {
-      console.log('DogeCloud directory refresh has started propagating');
+      console.log('DogeCloud article refresh has started propagating');
       return;
     }
 
     await sleep(POLL_INTERVAL_MS);
   }
 
-  // 查询状态偶尔会长时间停留在 process，但刷新本身仍会执行。继续提交预热，
-  // 避免仅因状态接口延迟而让部署失败并留下全站冷缓存。
-  console.warn(`DogeCloud refresh is still processing after ${REFRESH_WAIT_MS / 1000} seconds`);
+  console.warn(`DogeCloud article refresh is still processing after ${REFRESH_WAIT_MS / 1000} seconds`);
 }
 
-function decodeXml(value) {
-  return value
-    .replaceAll('&amp;', '&')
-    .replaceAll('&quot;', '"')
-    .replaceAll('&apos;', "'")
-    .replaceAll('&lt;', '<')
-    .replaceAll('&gt;', '>');
+const { refreshUrls, prefetchUrls } = getChangedPostUrls();
+
+if (refreshUrls.length === 0) {
+  console.log('No changed blog posts; DogeCloud cache refresh skipped');
+  process.exit(0);
 }
 
-async function getSitemapUrls() {
-  const response = await fetch(SITEMAP_URL, {
-    headers: {
-      'Cache-Control': 'no-cache',
-      Pragma: 'no-cache',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Unable to fetch sitemap: HTTP ${response.status}`);
-  }
-
-  const xml = await response.text();
-  const siteOrigin = new URL(SITE_URL).origin;
-  const urls = [...xml.matchAll(/<loc>(.*?)<\/loc>/gs)]
-    .map((match) => decodeXml(match[1].trim()))
-    .filter((url) => {
-      try {
-        return new URL(url).origin === siteOrigin;
-      } catch {
-        return false;
-      }
-    });
-
-  const uniqueUrls = [...new Set([...urls, ...CRITICAL_ASSET_URLS])];
-
-  if (uniqueUrls.length === 0) {
-    throw new Error('The sitemap did not contain any same-origin URLs');
-  }
-
-  if (uniqueUrls.length > MAX_PREFETCH_URLS) {
-    throw new Error(`Sitemap contains ${uniqueUrls.length} URLs; prefetch limit is ${MAX_PREFETCH_URLS}`);
-  }
-
-  return uniqueUrls;
-}
-
-const refreshTaskId = await createTask('path', [SITE_URL]);
-console.log(`DogeCloud directory refresh submitted: ${refreshTaskId}`);
+const refreshTaskId = await createTask('url', refreshUrls);
+console.log(`DogeCloud refresh submitted for ${refreshUrls.length} changed article(s): ${refreshTaskId}`);
 await waitForRefreshPropagation(refreshTaskId);
 
-const prefetchUrls = await getSitemapUrls();
-const prefetchTaskId = await createTask('prefetch', prefetchUrls);
-console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} pages/assets: ${prefetchTaskId}`);
+if (prefetchUrls.length > 0) {
+  const prefetchTaskId = await createTask('prefetch', prefetchUrls);
+  console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} changed article(s): ${prefetchTaskId}`);
+}
