@@ -58,7 +58,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Refresh DogeCloud CDN cache
+      - name: Refresh and prefetch DogeCloud CDN cache
         env:
           DOGECLOUD_ACCESS_KEY: ${{ secrets.DOGECLOUD_ACCESS_KEY }}
           DOGECLOUD_SECRET_KEY: ${{ secrets.DOGECLOUD_SECRET_KEY }}
