@@ -11,7 +11,7 @@ const SITE_URL = 'https://blog.xrlfreedom.top/';
 const SITEMAP_URL = new URL('sitemap-index.xml', SITE_URL).href;
 const MAX_PREFETCH_URLS = 1000;
 const POLL_INTERVAL_MS = 3000;
-const TASK_TIMEOUT_MS = 180000;
+const REFRESH_WAIT_MS = 120000;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -61,35 +61,27 @@ async function createTask(rtype, urls) {
   return data.task_id;
 }
 
-async function waitForTask(taskId, label, { allowPartialFailure = false } = {}) {
-  const deadline = Date.now() + TASK_TIMEOUT_MS;
+async function waitForRefreshPropagation(taskId) {
+  const deadline = Date.now() + REFRESH_WAIT_MS;
 
   while (Date.now() < deadline) {
     const apiPath = `/cdn/refresh/query.json?id=${encodeURIComponent(taskId)}`;
     const data = await dogecloudApi(apiPath);
     const tasks = data?.tasks ?? [];
-    const failedTasks = tasks.filter(
-      (task) => task.status === 'fail' || task.status === 'invalid'
-    );
-    const pendingTasks = tasks.filter(
-      (task) => !['done', 'fail', 'invalid'].includes(task.status)
-    );
 
-    if (tasks.length > 0 && pendingTasks.length === 0) {
-      if (failedTasks.length > 0) {
-        const message = `${label} completed with ${failedTasks.length} failed provider task(s)`;
-        if (!allowPartialFailure) throw new Error(message);
-        console.warn(message);
-      } else {
-        console.log(`${label} completed`);
-      }
+    // 融合 CDN 会拆成多个上游任务；任一上游进入终态后即可开始提交预热。
+    // 其余上游会继续异步处理，预热任务由多吉云在服务端接续执行。
+    if (tasks.some((task) => ['done', 'fail', 'invalid'].includes(task.status))) {
+      console.log('DogeCloud directory refresh has started propagating');
       return;
     }
 
     await sleep(POLL_INTERVAL_MS);
   }
 
-  throw new Error(`${label} did not complete within ${TASK_TIMEOUT_MS / 1000} seconds`);
+  // 查询状态偶尔会长时间停留在 process，但刷新本身仍会执行。继续提交预热，
+  // 避免仅因状态接口延迟而让部署失败并留下全站冷缓存。
+  console.warn(`DogeCloud refresh is still processing after ${REFRESH_WAIT_MS / 1000} seconds`);
 }
 
 function decodeXml(value) {
@@ -140,11 +132,8 @@ async function getSitemapUrls() {
 
 const refreshTaskId = await createTask('path', [SITE_URL]);
 console.log(`DogeCloud directory refresh submitted: ${refreshTaskId}`);
-// 融合 CDN 的个别上游偶尔会报告刷新失败；等待所有上游结束后仍继续预热，
-// 避免已成功刷新的节点保持冷缓存。
-await waitForTask(refreshTaskId, 'DogeCloud directory refresh', { allowPartialFailure: true });
+await waitForRefreshPropagation(refreshTaskId);
 
 const prefetchUrls = await getSitemapUrls();
 const prefetchTaskId = await createTask('prefetch', prefetchUrls);
 console.log(`DogeCloud prefetch submitted for ${prefetchUrls.length} pages: ${prefetchTaskId}`);
-await waitForTask(prefetchTaskId, 'DogeCloud page prefetch');
